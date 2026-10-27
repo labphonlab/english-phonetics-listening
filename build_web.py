@@ -300,6 +300,8 @@ def main():
     open(os.path.join(d, "index.html"), "w").write(
         PAGE.replace("{body}", body).replace("{credits}", credits()).replace("{n}", str(len(USED)))
         .replace("{css}", CSS).replace("{js}", JS))
+    import test_page   # 聞き取りテスト（lecture03/test.html）
+    open(os.path.join(d, "test.html"), "w").write(test_page.page(W, S31, S32))
     open(os.path.join(WEB, "index.html"), "w").write(INDEX)
     open(os.path.join(WEB, ".nojekyll"), "w").write("")
     print(len(USED), "files ->", ad)
