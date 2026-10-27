@@ -280,6 +280,7 @@ main{max-width:640px;margin:0 auto}a{display:block;background:var(--card);border
 </style></head><body><main>
 <h1>英語音声学　聞いて練習</h1>
 <a href="lecture03/">第3回　子音（3.1 語対・3.2 文脈）</a>
+<a href="lecture04/">第4回　子音連続と音節</a>
 </main></body></html>
 """
 
@@ -302,6 +303,8 @@ def main():
         .replace("{css}", CSS).replace("{js}", JS))
     import test_page   # 聞き取りテスト（lecture03/test.html）
     open(os.path.join(d, "test.html"), "w").write(test_page.page(W, S31, S32))
+    import lecture04_page   # 第4回（子音連続と音節）
+    lecture04_page.build(PAGE, CSS, JS)
     open(os.path.join(WEB, "index.html"), "w").write(INDEX)
     open(os.path.join(WEB, ".nojekyll"), "w").write("")
     print(len(USED), "files ->", ad)

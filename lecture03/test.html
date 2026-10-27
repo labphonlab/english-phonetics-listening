@@ -65,8 +65,8 @@ ul.wrong button{border:1px solid var(--line);border-radius:999px;background:var(
  <div class="prog"><span id="no"></span><span id="who"></span></div>
  <div class="bar"><i id="barin"></i></div>
  <button class="again" id="again">▶ もう一度聞く</button>
- <p class="q">流れたのはどっち？</p>
- <div class="choices"><button class="choice" data-i="0"><span class="en"></span><span class="ja"></span></button><button class="choice" data-i="1"><span class="en"></span><span class="ja"></span></button></div>
+ <p class="q" id="prompt"></p>
+ <div class="choices" id="choices"></div>
 </section>
 
 <section id="done" hidden>
@@ -85,7 +85,7 @@ ul.wrong button{border:1px solid var(--line);border-radius:999px;background:var(
 </main>
 <script src="../config.js"></script>
 <script>
-const ITEMS=[{"sec": "3.1", "contrast": "/θ/–/s/", "a": "think", "b": "sink", "aSrc": "audio/us_think.mp3", "aJa": "考える", "bSrc": "audio/us_sink.mp3", "bJa": "沈む"}, {"sec": "3.1", "contrast": "/θ/–/s/", "a": "thaw", "b": "saw", "aSrc": "audio/us_thaw.mp3", "aJa": "解ける", "bSrc": "audio/us_saw.mp3", "bJa": "見た"}, {"sec": "3.1", "contrast": "/θ/–/s/", "a": "faith", "b": "face", "aSrc": "audio/us_faith.mp3", "aJa": "信頼", "bSrc": "audio/us_face.mp3", "bJa": "顔"}, {"sec": "3.1", "contrast": "/f/–/θ/", "a": "free", "b": "three", "aSrc": "audio/us_free.mp3", "aJa": "自由な", "bSrc": "audio/us_three.mp3", "bJa": "3"}, {"sec": "3.1", "contrast": "/f/–/θ/", "a": "first", "b": "thirst", "aSrc": "audio/us_first.mp3", "aJa": "最初の", "bSrc": "audio/us_thirst.mp3", "bJa": "渇き"}, {"sec": "3.1", "contrast": "/f/–/θ/", "a": "roof", "b": "Ruth", "aSrc": "audio/us_roof.mp3", "aJa": "屋根", "bSrc": "audio/gk_Ruth.mp3", "bJa": "ルース（人名）"}, {"sec": "3.1", "contrast": "/ð/–/z/", "a": "then", "b": "Zen", "aSrc": "audio/us_then.mp3", "aJa": "そのとき", "bSrc": "audio/us_zen.mp3", "bJa": "禅"}, {"sec": "3.1", "contrast": "/ð/–/z/", "a": "breathe", "b": "breeze", "aSrc": "audio/us_breathe.mp3", "aJa": "呼吸する", "bSrc": "audio/us_breeze.mp3", "bJa": "そよ風"}, {"sec": "3.1", "contrast": "/ð/–/z/", "a": "clothe", "b": "close", "aSrc": "audio/us_clothe.mp3", "aJa": "服を着せる", "bSrc": "audio/us_close-verb.mp3", "bJa": "閉める"}, {"sec": "3.1", "contrast": "/b/–/v/", "a": "berry", "b": "very", "aSrc": "audio/us_berry.mp3", "aJa": "ベリー", "bSrc": "audio/us_very.mp3", "bJa": "とても"}, {"sec": "3.1", "contrast": "/b/–/v/", "a": "boat", "b": "vote", "aSrc": "audio/us_boat.mp3", "aJa": "ボート", "bSrc": "audio/us_vote.mp3", "bJa": "投票"}, {"sec": "3.1", "contrast": "/b/–/v/", "a": "curb", "b": "curve", "aSrc": "audio/vh_curb.mp3", "aJa": "縁石", "bSrc": "audio/us_curve.mp3", "bJa": "曲線"}, {"sec": "3.1", "contrast": "/s/–/ʃ/", "a": "see", "b": "she", "aSrc": "audio/us_see.mp3", "aJa": "見る", "bSrc": "audio/us_she.mp3", "bJa": "彼女"}, {"sec": "3.1", "contrast": "/s/–/ʃ/", "a": "mess", "b": "mesh", "aSrc": "audio/us_mess.mp3", "aJa": "散らかり", "bSrc": "audio/us_mesh.mp3", "bJa": "網目"}, {"sec": "3.1", "contrast": "/s/–/ʃ/", "a": "Swiss", "b": "swish", "aSrc": "audio/vh_swiss.mp3", "aJa": "スイスの", "bSrc": "audio/au_swish.mp3", "bJa": "ヒュッと振る"}, {"sec": "3.1", "contrast": "/l/–/r/", "a": "light", "b": "right", "aSrc": "audio/us_light.mp3", "aJa": "光", "bSrc": "audio/us_right.mp3", "bJa": "右"}, {"sec": "3.1", "contrast": "/l/–/r/", "a": "lip", "b": "rip", "aSrc": "audio/us_lip.mp3", "aJa": "唇", "bSrc": "audio/us_rip.mp3", "bJa": "裂く"}, {"sec": "3.1", "contrast": "/l/–/r/", "a": "lamb", "b": "ram", "aSrc": "audio/us_lamb.mp3", "aJa": "子羊", "bSrc": "audio/us_ram.mp3", "bJa": "雄羊"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "pass", "b": "path", "aSrc": "audio/us_pass.mp3", "aJa": "峠", "bSrc": "audio/us_path.mp3", "bJa": "小道"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "thought", "b": "fought", "aSrc": "audio/us_thought.mp3", "aJa": "考えた", "bSrc": "audio/us_fought.mp3", "bJa": "けんかした"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "bolt", "b": "volt", "aSrc": "audio/us_bolt.mp3", "aJa": "ボルト", "bSrc": "audio/vh_volt.mp3", "bJa": "ボルト（電圧）"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "shelling", "b": "selling", "aSrc": "audio/vh_shelling.mp3", "aJa": "殻をむく", "bSrc": "audio/gk_selling.mp3", "bJa": "売る"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "collect", "b": "correct", "aSrc": "audio/us_collect.mp3", "aJa": "集める", "bSrc": "audio/us_correct.mp3", "bJa": "訂正する"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "train", "b": "chain", "aSrc": "audio/us_train.mp3", "aJa": "列車", "bSrc": "audio/us_chain.mp3", "bJa": "鎖"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "ram", "b": "lamb", "aSrc": "audio/us_ram.mp3", "aJa": "雄羊", "bSrc": "audio/us_lamb.mp3", "bJa": "子羊"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "play", "b": "pray", "aSrc": "audio/us_play.mp3", "aJa": "遊ぶ", "bSrc": "audio/us_pray.mp3", "bJa": "祈る"}];
+const ITEMS=[{"sec": "3.1", "contrast": "/θ/–/s/", "a": "think", "b": "sink", "aSrc": "audio/us_think.mp3", "aJa": "考える", "bSrc": "audio/us_sink.mp3", "bJa": "沈む", "kind": "pair"}, {"sec": "3.1", "contrast": "/θ/–/s/", "a": "thaw", "b": "saw", "aSrc": "audio/us_thaw.mp3", "aJa": "解ける", "bSrc": "audio/us_saw.mp3", "bJa": "見た", "kind": "pair"}, {"sec": "3.1", "contrast": "/θ/–/s/", "a": "faith", "b": "face", "aSrc": "audio/us_faith.mp3", "aJa": "信頼", "bSrc": "audio/us_face.mp3", "bJa": "顔", "kind": "pair"}, {"sec": "3.1", "contrast": "/f/–/θ/", "a": "free", "b": "three", "aSrc": "audio/us_free.mp3", "aJa": "自由な", "bSrc": "audio/us_three.mp3", "bJa": "3", "kind": "pair"}, {"sec": "3.1", "contrast": "/f/–/θ/", "a": "first", "b": "thirst", "aSrc": "audio/us_first.mp3", "aJa": "最初の", "bSrc": "audio/us_thirst.mp3", "bJa": "渇き", "kind": "pair"}, {"sec": "3.1", "contrast": "/f/–/θ/", "a": "roof", "b": "Ruth", "aSrc": "audio/us_roof.mp3", "aJa": "屋根", "bSrc": "audio/gk_Ruth.mp3", "bJa": "ルース（人名）", "kind": "pair"}, {"sec": "3.1", "contrast": "/ð/–/z/", "a": "then", "b": "Zen", "aSrc": "audio/us_then.mp3", "aJa": "そのとき", "bSrc": "audio/us_zen.mp3", "bJa": "禅", "kind": "pair"}, {"sec": "3.1", "contrast": "/ð/–/z/", "a": "breathe", "b": "breeze", "aSrc": "audio/us_breathe.mp3", "aJa": "呼吸する", "bSrc": "audio/us_breeze.mp3", "bJa": "そよ風", "kind": "pair"}, {"sec": "3.1", "contrast": "/ð/–/z/", "a": "clothe", "b": "close", "aSrc": "audio/us_clothe.mp3", "aJa": "服を着せる", "bSrc": "audio/us_close-verb.mp3", "bJa": "閉める", "kind": "pair"}, {"sec": "3.1", "contrast": "/b/–/v/", "a": "berry", "b": "very", "aSrc": "audio/us_berry.mp3", "aJa": "ベリー", "bSrc": "audio/us_very.mp3", "bJa": "とても", "kind": "pair"}, {"sec": "3.1", "contrast": "/b/–/v/", "a": "boat", "b": "vote", "aSrc": "audio/us_boat.mp3", "aJa": "ボート", "bSrc": "audio/us_vote.mp3", "bJa": "投票", "kind": "pair"}, {"sec": "3.1", "contrast": "/b/–/v/", "a": "curb", "b": "curve", "aSrc": "audio/vh_curb.mp3", "aJa": "縁石", "bSrc": "audio/us_curve.mp3", "bJa": "曲線", "kind": "pair"}, {"sec": "3.1", "contrast": "/s/–/ʃ/", "a": "see", "b": "she", "aSrc": "audio/us_see.mp3", "aJa": "見る", "bSrc": "audio/us_she.mp3", "bJa": "彼女", "kind": "pair"}, {"sec": "3.1", "contrast": "/s/–/ʃ/", "a": "mess", "b": "mesh", "aSrc": "audio/us_mess.mp3", "aJa": "散らかり", "bSrc": "audio/us_mesh.mp3", "bJa": "網目", "kind": "pair"}, {"sec": "3.1", "contrast": "/s/–/ʃ/", "a": "Swiss", "b": "swish", "aSrc": "audio/vh_swiss.mp3", "aJa": "スイスの", "bSrc": "audio/au_swish.mp3", "bJa": "ヒュッと振る", "kind": "pair"}, {"sec": "3.1", "contrast": "/l/–/r/", "a": "light", "b": "right", "aSrc": "audio/us_light.mp3", "aJa": "光", "bSrc": "audio/us_right.mp3", "bJa": "右", "kind": "pair"}, {"sec": "3.1", "contrast": "/l/–/r/", "a": "lip", "b": "rip", "aSrc": "audio/us_lip.mp3", "aJa": "唇", "bSrc": "audio/us_rip.mp3", "bJa": "裂く", "kind": "pair"}, {"sec": "3.1", "contrast": "/l/–/r/", "a": "lamb", "b": "ram", "aSrc": "audio/us_lamb.mp3", "aJa": "子羊", "bSrc": "audio/us_ram.mp3", "bJa": "雄羊", "kind": "pair"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "pass", "b": "path", "aSrc": "audio/us_pass.mp3", "aJa": "峠", "bSrc": "audio/us_path.mp3", "bJa": "小道", "kind": "pair"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "thought", "b": "fought", "aSrc": "audio/us_thought.mp3", "aJa": "考えた", "bSrc": "audio/us_fought.mp3", "bJa": "けんかした", "kind": "pair"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "bolt", "b": "volt", "aSrc": "audio/us_bolt.mp3", "aJa": "ボルト", "bSrc": "audio/vh_volt.mp3", "bJa": "ボルト（電圧）", "kind": "pair"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "shelling", "b": "selling", "aSrc": "audio/vh_shelling.mp3", "aJa": "殻をむく", "bSrc": "audio/gk_selling.mp3", "bJa": "売る", "kind": "pair"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "collect", "b": "correct", "aSrc": "audio/us_collect.mp3", "aJa": "集める", "bSrc": "audio/us_correct.mp3", "bJa": "訂正する", "kind": "pair"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "train", "b": "chain", "aSrc": "audio/us_train.mp3", "aJa": "列車", "bSrc": "audio/us_chain.mp3", "bJa": "鎖", "kind": "pair"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "ram", "b": "lamb", "aSrc": "audio/us_ram.mp3", "aJa": "雄羊", "bSrc": "audio/us_lamb.mp3", "bJa": "子羊", "kind": "pair"}, {"sec": "3.2", "contrast": "文脈の語対", "a": "play", "b": "pray", "aSrc": "audio/us_play.mp3", "aJa": "遊ぶ", "bSrc": "audio/us_pray.mp3", "bJa": "祈る", "kind": "pair"}];
 const TEST_ID="l03-listening", MAX_PLAYS=3;
 const API=(window.LISTENING_TEST_CONFIG||{}).apiUrl||"";
 
@@ -116,28 +116,38 @@ $("go").onclick=()=>{
   sub={action:"submit",testId:TEST_ID,submissionId:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(36).slice(2)),
        studentId:sid,name:nm,startedAt,ua:navigator.userAgent};
   $("who").textContent=nm;$("start").hidden=true;$("quiz").hidden=false;window.scrollTo(0,0);
-  ITEMS.forEach(it=>{aud(it.aSrc);aud(it.bSrc)});
+  ITEMS.forEach(it=>{[it.aSrc,it.bSrc,it.src].filter(Boolean).forEach(aud)});
   show();
 };
+function opts(it){
+  if(it.kind==="count")return it.opts.map(o=>({en:o,ja:""}));
+  return [{en:it.a,ja:it.aJa},{en:it.b,ja:it.bJa}];
+}
+function src(it){return it.kind==="count"?it.src:it[it.target+"Src"]}
+function right(it){return it.kind==="count"?it.ans:it[it.target]}
 function show(){
   const it=order[k];
   $("no").textContent="問 "+(k+1)+" / "+order.length;$("barin").style.width=(k/order.length*100)+"%";
-  document.querySelectorAll(".choice").forEach((b,i)=>{const s=i?"b":"a";b.querySelector(".en").textContent=it[s];b.querySelector(".ja").textContent=it[s+"Ja"];b.disabled=true});
-  setTimeout(()=>document.querySelectorAll(".choice").forEach(b=>b.disabled=false),350);  // 連打で次の問題に答えないように
+  $("prompt").innerHTML=it.kind==="count"?"<span style='font-size:28px'>"+it.word+"</span><br>何音節に聞こえる？":"流れたのはどっち？";
+  const box=$("choices");box.innerHTML="";
+  opts(it).forEach((o,i)=>{const b=document.createElement("button");b.className="choice";b.disabled=true;
+    b.innerHTML="<span class='en'>"+o.en+"</span>"+(o.ja?"<span class='ja'>"+o.ja+"</span>":"");b.onclick=()=>answer(i);box.appendChild(b)});
+  setTimeout(()=>box.querySelectorAll(".choice").forEach(b=>b.disabled=false),350);  // 連打で次の問題に答えないように
   plays=0;tq=Date.now();hear();
 }
 function hear(){
   const it=order[k];if(plays>=MAX_PLAYS)return;
-  plays++;play(it[it.target+"Src"]);
+  plays++;play(src(it));
   $("again").disabled=plays>=MAX_PLAYS;$("again").textContent=plays>=MAX_PLAYS?"聞けるのはここまで":"▶ もう一度聞く（あと "+(MAX_PLAYS-plays)+" 回）";
 }
 $("again").onclick=hear;
-document.querySelectorAll(".choice").forEach((b,i)=>b.onclick=()=>{
+function answer(i){
   const it=order[k];document.querySelectorAll(".choice").forEach(x=>x.disabled=true);
-  res.push({sec:it.sec,contrast:it.contrast,a:it.a,b:it.b,target:it[it.target],answer:it[i?"b":"a"],plays,ms:Date.now()-tq,tSrc:it[it.target+"Src"]});
+  res.push({sec:it.sec,contrast:it.contrast,a:it.kind==="count"?it.word:it.a,b:it.kind==="count"?"":it.b,
+    target:right(it),answer:opts(it)[i].en,plays,ms:Date.now()-tq,tSrc:src(it)});
   k++;
   if(k<order.length){show()}else{finish()}
-});
+}
 window.addEventListener("beforeunload",e=>{if(!$("quiz").hidden){e.preventDefault();e.returnValue=""}});
 
 function finish(){
@@ -149,8 +159,8 @@ function finish(){
   $("wrongbox").hidden=!w.length;
   $("wrong").innerHTML="";
   w.forEach(r=>{const li=document.createElement("li");
-    li.innerHTML="<span>"+r.a+" – "+r.b+"：流れたのは <b>"+r.target+"</b>（答え "+r.answer+"）</span>";
-    const bt=document.createElement("button");bt.textContent="▶ "+r.target;bt.onclick=()=>play(r.tSrc);li.appendChild(bt);$("wrong").appendChild(li)});
+    li.innerHTML="<span>"+(r.b?r.a+" – "+r.b+"：流れたのは ":r.a+"：")+"<b>"+r.target+"</b>（答え "+r.answer+"）</span>";
+    const bt=document.createElement("button");bt.textContent="▶ "+(r.b?r.target:r.a);bt.onclick=()=>play(r.tSrc);li.appendChild(bt);$("wrong").appendChild(li)});
   Object.assign(sub,{finishedAt:Date.now(),items:res.map(({tSrc,...r})=>r)});
   const pend=store.get("lt-pending")||[];pend.push(sub);store.set("lt-pending",pend);
   send();

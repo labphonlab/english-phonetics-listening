@@ -22,6 +22,7 @@ def items(W, S31, S32):
             assert key, it[k]          # 録音の無い語は出さない
             it[k + "Src"] = f"audio/{key}.mp3"
             it[k + "Ja"] = mean
+        it["kind"] = "pair"
     return out
 
 
@@ -68,16 +69,16 @@ PAGE = """<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#2B3A67">
-<title>子音の聞き取りテスト</title>
+<title>{title}</title>
 <style>{css}</style></head>
 <body>
-<header><p>英語音声学　第3回</p><h1>子音の聞き取りテスト</h1></header>
+<header><p>英語音声学　{lecture}</p><h1>{title}</h1></header>
 <main>
 <div class="banner" id="demo" hidden>送信先が未設定のため、いまはお試し表示です（結果は送られません）。</div>
 
 <section id="start">
  <div class="card">
-  <p style="margin-top:0">流れた英単語はどちらか、2つから選びます。全 <b>{total}</b> 問。各問 <b>{maxplays}</b> 回まで聞けます。最後の問題に答えると、結果が自動で先生に送信されます。</p>
+  <p style="margin-top:0">{intro}全 <b>{total}</b> 問。各問 <b>{maxplays}</b> 回まで聞けます。最後の問題に答えると、結果が自動で先生に送信されます。</p>
   <p class="sub">イヤホンを使い、静かな場所で受けてください。途中でページを閉じると最初からになります。</p>
  </div>
  <div class="card">
@@ -94,8 +95,8 @@ PAGE = """<!doctype html>
  <div class="prog"><span id="no"></span><span id="who"></span></div>
  <div class="bar"><i id="barin"></i></div>
  <button class="again" id="again">▶ もう一度聞く</button>
- <p class="q">流れたのはどっち？</p>
- <div class="choices"><button class="choice" data-i="0"><span class="en"></span><span class="ja"></span></button><button class="choice" data-i="1"><span class="en"></span><span class="ja"></span></button></div>
+ <p class="q" id="prompt"></p>
+ <div class="choices" id="choices"></div>
 </section>
 
 <section id="done" hidden>
@@ -150,28 +151,38 @@ $("go").onclick=()=>{
   sub={action:"submit",testId:TEST_ID,submissionId:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(36).slice(2)),
        studentId:sid,name:nm,startedAt,ua:navigator.userAgent};
   $("who").textContent=nm;$("start").hidden=true;$("quiz").hidden=false;window.scrollTo(0,0);
-  ITEMS.forEach(it=>{aud(it.aSrc);aud(it.bSrc)});
+  ITEMS.forEach(it=>{[it.aSrc,it.bSrc,it.src].filter(Boolean).forEach(aud)});
   show();
 };
+function opts(it){
+  if(it.kind==="count")return it.opts.map(o=>({en:o,ja:""}));
+  return [{en:it.a,ja:it.aJa},{en:it.b,ja:it.bJa}];
+}
+function src(it){return it.kind==="count"?it.src:it[it.target+"Src"]}
+function right(it){return it.kind==="count"?it.ans:it[it.target]}
 function show(){
   const it=order[k];
   $("no").textContent="問 "+(k+1)+" / "+order.length;$("barin").style.width=(k/order.length*100)+"%";
-  document.querySelectorAll(".choice").forEach((b,i)=>{const s=i?"b":"a";b.querySelector(".en").textContent=it[s];b.querySelector(".ja").textContent=it[s+"Ja"];b.disabled=true});
-  setTimeout(()=>document.querySelectorAll(".choice").forEach(b=>b.disabled=false),350);  // 連打で次の問題に答えないように
+  $("prompt").innerHTML=it.kind==="count"?"<span style='font-size:28px'>"+it.word+"</span><br>何音節に聞こえる？":"流れたのはどっち？";
+  const box=$("choices");box.innerHTML="";
+  opts(it).forEach((o,i)=>{const b=document.createElement("button");b.className="choice";b.disabled=true;
+    b.innerHTML="<span class='en'>"+o.en+"</span>"+(o.ja?"<span class='ja'>"+o.ja+"</span>":"");b.onclick=()=>answer(i);box.appendChild(b)});
+  setTimeout(()=>box.querySelectorAll(".choice").forEach(b=>b.disabled=false),350);  // 連打で次の問題に答えないように
   plays=0;tq=Date.now();hear();
 }
 function hear(){
   const it=order[k];if(plays>=MAX_PLAYS)return;
-  plays++;play(it[it.target+"Src"]);
+  plays++;play(src(it));
   $("again").disabled=plays>=MAX_PLAYS;$("again").textContent=plays>=MAX_PLAYS?"聞けるのはここまで":"▶ もう一度聞く（あと "+(MAX_PLAYS-plays)+" 回）";
 }
 $("again").onclick=hear;
-document.querySelectorAll(".choice").forEach((b,i)=>b.onclick=()=>{
+function answer(i){
   const it=order[k];document.querySelectorAll(".choice").forEach(x=>x.disabled=true);
-  res.push({sec:it.sec,contrast:it.contrast,a:it.a,b:it.b,target:it[it.target],answer:it[i?"b":"a"],plays,ms:Date.now()-tq,tSrc:it[it.target+"Src"]});
+  res.push({sec:it.sec,contrast:it.contrast,a:it.kind==="count"?it.word:it.a,b:it.kind==="count"?"":it.b,
+    target:right(it),answer:opts(it)[i].en,plays,ms:Date.now()-tq,tSrc:src(it)});
   k++;
   if(k<order.length){show()}else{finish()}
-});
+}
 window.addEventListener("beforeunload",e=>{if(!$("quiz").hidden){e.preventDefault();e.returnValue=""}});
 
 function finish(){
@@ -183,8 +194,8 @@ function finish(){
   $("wrongbox").hidden=!w.length;
   $("wrong").innerHTML="";
   w.forEach(r=>{const li=document.createElement("li");
-    li.innerHTML="<span>"+r.a+" – "+r.b+"：流れたのは <b>"+r.target+"</b>（答え "+r.answer+"）</span>";
-    const bt=document.createElement("button");bt.textContent="▶ "+r.target;bt.onclick=()=>play(r.tSrc);li.appendChild(bt);$("wrong").appendChild(li)});
+    li.innerHTML="<span>"+(r.b?r.a+" – "+r.b+"：流れたのは ":r.a+"：")+"<b>"+r.target+"</b>（答え "+r.answer+"）</span>";
+    const bt=document.createElement("button");bt.textContent="▶ "+(r.b?r.target:r.a);bt.onclick=()=>play(r.tSrc);li.appendChild(bt);$("wrong").appendChild(li)});
   Object.assign(sub,{finishedAt:Date.now(),items:res.map(({tSrc,...r})=>r)});
   const pend=store.get("lt-pending")||[];pend.push(sub);store.set("lt-pending",pend);
   send();
@@ -218,8 +229,13 @@ if(API){(store.get("lt-pending")||[]).forEach(p=>post(p).then(()=>store.set("lt-
 """
 
 
-def page(W, S31, S32):
-    its = items(W, S31, S32)
+def render(its, test_id, lecture, title, intro):
+    """its: 問題の並び（kind=pair か count）。test_id はスプレッドシートの「テスト」列に入る"""
     return (PAGE.replace("{items}", json.dumps(its, ensure_ascii=False)).replace("{total}", str(len(its)))
-            .replace("{testid}", TEST_ID).replace("{maxplays}", str(MAX_PLAYS))
+            .replace("{testid}", test_id).replace("{maxplays}", str(MAX_PLAYS))
+            .replace("{lecture}", lecture).replace("{title}", title).replace("{intro}", intro)
             .replace("{css}", CSS).replace("{js}", JS))
+
+
+def page(W, S31, S32):
+    return render(items(W, S31, S32), TEST_ID, "第3回", "子音の聞き取りテスト", "流れた英単語はどちらか、2つから選びます。")
