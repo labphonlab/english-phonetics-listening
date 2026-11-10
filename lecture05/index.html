@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#8C3A26">
+<title>語強勢を聞いて練習</title>
+<style>
+:root{--bg:#F6F4EF;--card:#FFFFFF;--ink:#1B2238;--sub:#5B6573;--line:#E2DED5;--btn:#F2A93B;--btn-ink:#1B2238;--btn-on:#D98A12;
+--a:#1F8A7D;--b:#D6452B;--band:#2B3A67;--band-ink:#FFFFFF;--hd:#8C3A26;--ok:#1F8A7D;--ng:#D6452B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181F;--card:#1F242E;--ink:#ECEEF2;--sub:#A3ABB8;--line:#323947;
+--btn:#E9A23A;--btn-ink:#1B1B1B;--btn-on:#FFC266;--a:#4CC3B3;--b:#FF7A63;--band:#2B3A67;--hd:#B9584A}}
+:root[data-theme="dark"]{--bg:#15181F;--card:#1F242E;--ink:#ECEEF2;--sub:#A3ABB8;--line:#323947;--btn:#E9A23A;--btn-ink:#1B1B1B;--btn-on:#FFC266;--a:#4CC3B3;--b:#FF7A63;--hd:#B9584A}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Segoe UI",sans-serif;
+line-height:1.6;font-size:17px;padding-bottom:env(safe-area-inset-bottom)}
+header{background:var(--hd);color:#fff;padding:calc(18px + env(safe-area-inset-top)) 16px 16px}
+header p{margin:0;font-size:14px;opacity:.85}
+header h1{margin:2px 0 0;font-size:24px;line-height:1.3}
+nav{position:sticky;top:0;z-index:5;display:flex;gap:8px;padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
+nav a{flex:1;text-align:center;padding:8px 4px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;background:var(--card)}
+main{max-width:640px;margin:0 auto;padding:0 16px}
+section{padding-top:8px;scroll-margin-top:56px}
+h2{font-size:21px;margin:22px 0 6px;line-height:1.35}
+h2 .no{display:inline-block;margin-right:8px;color:var(--hd)}
+.lead{color:var(--sub);font-size:15px;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:0 0 12px}
+h3.ipa{margin:0 0 8px;font-size:19px;color:var(--sub);font-family:"Arial Unicode MS","Lucida Grande","Noto Sans",sans-serif;font-weight:700}
+.pair{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:stretch}
+.pair+.res{min-height:0;margin:2px 0 8px;font-size:15px;text-align:center}
+.res:empty{margin:0 0 8px}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;cursor:pointer;touch-action:manipulation}
+.w{min-height:64px;border:0;border-radius:14px;background:var(--btn);color:var(--btn-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;
+box-shadow:0 2px 0 rgba(0,0,0,.15);transition:transform .06s}
+.w .en{font-size:21px;font-weight:700;line-height:1.15}
+.w .en::before{content:"▶ ";font-size:13px;vertical-align:2px}
+.w .ja{font-size:13px;line-height:1.3;opacity:.85}
+.w .na{font-size:12px}
+.w:active,.w.on{transform:translateY(1px);background:var(--btn-on)}
+.w.off{background:var(--line);color:var(--sub);box-shadow:none}
+.w.off .en::before{content:""}
+.q{min-height:64px;width:64px;border:2px solid var(--btn);border-radius:14px;background:transparent;color:var(--ink);font-size:13px;font-weight:700;line-height:1.2;padding:4px}
+.q:active,.q.on{background:var(--btn);color:var(--btn-ink)}
+.pair.ask .w{outline:3px dashed var(--btn);outline-offset:2px}
+.ok{color:var(--ok);font-weight:700}.ng{color:var(--ng);font-weight:700}
+.sent{margin:0 0 10px;font-size:18px;line-height:1.5;display:flex;gap:10px}
+.sent .n{font-weight:700;color:var(--sub);font-style:normal}
+.ca{color:var(--a)}.cb{color:var(--b)}
+.sub{font-size:14px;color:var(--sub);margin:6px 0 6px}
+.point{background:var(--band);color:var(--band-ink);border-radius:12px;padding:12px 14px;font-size:15px;margin:4px 0 8px}
+.point b{color:#F2A93B;margin-right:10px}
+.notes{color:var(--sub);font-size:13px;padding-left:20px;margin:6px 0 0}
+footer{max-width:640px;margin:28px auto 0;padding:0 16px 32px;color:var(--sub);font-size:13px}
+footer h2{font-size:16px;color:var(--ink)}
+footer table{width:100%;border-collapse:collapse;font-size:12.5px}
+footer td{border-top:1px solid var(--line);padding:5px 4px;vertical-align:top}
+footer a{color:inherit}
+details summary{cursor:pointer;font-weight:600;color:var(--ink);padding:6px 0}
+@media (max-width:360px){.w .en{font-size:18px}.q{width:54px}}
+
+h3{margin:0 0 8px;font-size:17px}h3.mt{margin-top:14px}
+.lab{margin:10px 0 6px;font-size:14px;color:var(--sub);font-weight:600}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:6px}
+.row.wide{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.row .w{min-height:58px;padding:6px 2px}.row .w .en{font-size:17px;white-space:nowrap}.row .w .en::before{font-size:11px}
+.fam{border-top:1px solid var(--line);padding-top:4px;margin-top:6px}.fam:first-child{border-top:0;margin-top:0;padding-top:0}
+.fam .sub{margin:0 0 6px;font-size:13px}
+.sub{font-size:14px;color:var(--sub);margin:4px 0 10px}
+.pair .w .en{font-size:19px}.pair .w .ja{font-size:12px}
+nav{gap:6px;overflow-x:auto;padding:8px 12px}nav a{flex:1 0 auto;padding:8px 10px;font-size:14px}
+</style></head>
+<body>
+<header><p>英語音声学　第5回</p><h1>語強勢を聞いて練習</h1></header>
+<nav><a href="#two">2音節</a><a href="#nv">品詞</a><a href="#fam">語族</a><a href="#aff">接辞</a><a href="#credits">出典</a></nav>
+<main>
+<section id="two"><h2><span class="no">1</span>二音節語の強勢位置</h2>
+<p class="lead">語をタップすると音声が流れます。<b>大文字</b>が強勢のある音節。強勢のある音節は、長く・はっきり・高さの変化をともなって聞こえます。</p>
+<div class="card"><h3>第1音節が強い（名詞に多い）</h3><div class="row"><button class="w" data-a="audio/us_table.mp3"><span class="en">TAble</span><span class="ja">テーブル</span></button><button class="w" data-a="audio/us_people.mp3"><span class="en">PEOple</span><span class="ja">人々</span></button><button class="w" data-a="audio/us_happy.mp3"><span class="en">HAPpy</span><span class="ja">幸せな</span></button><button class="w" data-a="audio/us_doctor.mp3"><span class="en">DOCtor</span><span class="ja">医者</span></button><button class="w" data-a="audio/us_music.mp3"><span class="en">MUSic</span><span class="ja">音楽</span></button><button class="w" data-a="audio/us_open.mp3"><span class="en">OPen</span><span class="ja">開いた</span></button><button class="w" data-a="audio/us_sister.mp3"><span class="en">SISter</span><span class="ja">姉妹</span></button><button class="w" data-a="audio/us_winter.mp3"><span class="en">WINter</span><span class="ja">冬</span></button><button class="w" data-a="audio/us_forward.mp3"><span class="en">FORward</span><span class="ja">前方へ</span></button></div><h3 class="mt">第2音節が強い（動詞・形容詞に多い）</h3><div class="row"><button class="w" data-a="audio/us_police.mp3"><span class="en">poLICE</span><span class="ja">警察</span></button><button class="w" data-a="audio/us_prefer.mp3"><span class="en">preFER</span><span class="ja">より好む</span></button><button class="w" data-a="audio/us_believe.mp3"><span class="en">beLIEVE</span><span class="ja">信じる</span></button><button class="w" data-a="audio/us_forget.mp3"><span class="en">forGET</span><span class="ja">忘れる</span></button><button class="w" data-a="audio/us_begin.mp3"><span class="en">beGIN</span><span class="ja">始める</span></button><button class="w" data-a="audio/us_enjoy.mp3"><span class="en">enJOY</span><span class="ja">楽しむ</span></button><button class="w" data-a="audio/us_alone.mp3"><span class="en">aLONE</span><span class="ja">ひとりで</span></button><button class="w" data-a="audio/us_awake.mp3"><span class="en">aWAKE</span><span class="ja">目が覚めて</span></button></div></div>
+<div class="card"><h3>三音節以上の語</h3><p class="lab">第1音節</p><div class="row"><button class="w" data-a="audio/us_average.mp3"><span class="en">AVerage</span><span class="ja">平均</span></button><button class="w" data-a="audio/us_generous.mp3"><span class="en">GENerous</span><span class="ja">気前のよい</span></button><button class="w" data-a="audio/us_comfortable.mp3"><span class="en">COMfortable</span><span class="ja">快適な</span></button></div><p class="lab">第2音節</p><div class="row"><button class="w" data-a="audio/us_contribute.mp3"><span class="en">conTRIBute</span><span class="ja">貢献する</span></button><button class="w" data-a="audio/us_important.mp3"><span class="en">imPORtant</span><span class="ja">重要な</span></button></div><p class="lab">第3音節（第1音節に弱い強勢）</p><div class="row"><button class="w" data-a="audio/us_recommend.mp3"><span class="en">recomMEND</span><span class="ja">勧める</span></button><button class="w" data-a="audio/us_introduce.mp3"><span class="en">introDUCE</span><span class="ja">紹介する</span></button></div><p class="sub">強勢のない音節は短く、母音があいまいな [ə] になりやすい。</p></div>
+<div class="point"><b>ポイント</b>つづりの長さでは決まらない。辞書の強勢記号と音声で確かめる。</div></section>
+<section id="nv"><h2><span class="no">2</span>名詞と動詞で強勢が変わる語</h2>
+<p class="lead">つづりは同じでも、名詞は前、動詞は後ろが強い。<b>どっち？</b> を押すと名詞・動詞のどちらかが流れるので、聞こえた方をタップしてください。</p>
+<div class="card"><div class="pair"><button class="w" data-a="audio/us_record-noun.mp3"><span class="en">REcord</span><span class="ja">名詞：記録</span></button><button class="w" data-a="audio/us_record-verb.mp3"><span class="en">reCORD</span><span class="ja">動詞：記録する</span></button><button class="q" data-pair="audio/us_record-noun.mp3|audio/us_record-verb.mp3" data-words="REcord（名詞）|reCORD（動詞）" aria-label="REcord か reCORD のどちらかが流れる">どっち？</button></div><p class="res" aria-live="polite"></p><div class="pair"><button class="w" data-a="audio/us_present-adjective.mp3"><span class="en">PREsent</span><span class="ja">名詞：出席して（形容詞）</span></button><button class="w" data-a="audio/us_present-verb1.mp3"><span class="en">preSENT</span><span class="ja">動詞：贈る</span></button><button class="q" data-pair="audio/us_present-adjective.mp3|audio/us_present-verb1.mp3" data-words="PREsent（名詞）|preSENT（動詞）" aria-label="PREsent か preSENT のどちらかが流れる">どっち？</button></div><p class="res" aria-live="polite"></p><div class="pair"><button class="w" data-a="audio/us_permit-noun.mp3"><span class="en">PERmit</span><span class="ja">名詞：許可証</span></button><button class="w" data-a="audio/us_permit-verb.mp3"><span class="en">perMIT</span><span class="ja">動詞：許可する</span></button><button class="q" data-pair="audio/us_permit-noun.mp3|audio/us_permit-verb.mp3" data-words="PERmit（名詞）|perMIT（動詞）" aria-label="PERmit か perMIT のどちらかが流れる">どっち？</button></div><p class="res" aria-live="polite"></p><div class="pair"><button class="w" data-a="audio/us_object-noun.mp3"><span class="en">OBject</span><span class="ja">名詞：物体</span></button><button class="w" data-a="audio/us_object-verb.mp3"><span class="en">obJECT</span><span class="ja">動詞：反対する</span></button><button class="q" data-pair="audio/us_object-noun.mp3|audio/us_object-verb.mp3" data-words="OBject（名詞）|obJECT（動詞）" aria-label="OBject か obJECT のどちらかが流れる">どっち？</button></div><p class="res" aria-live="polite"></p><div class="pair"><button class="w" data-a="audio/us_protest-noun.mp3"><span class="en">PROtest</span><span class="ja">名詞：抗議</span></button><button class="w" data-a="audio/us_protest-verb.mp3"><span class="en">proTEST</span><span class="ja">動詞：抗議する</span></button><button class="q" data-pair="audio/us_protest-noun.mp3|audio/us_protest-verb.mp3" data-words="PROtest（名詞）|proTEST（動詞）" aria-label="PROtest か proTEST のどちらかが流れる">どっち？</button></div><p class="res" aria-live="polite"></p><div class="pair"><button class="w" data-a="audio/us_subject-noun.mp3"><span class="en">SUBject</span><span class="ja">名詞：主題</span></button><button class="w" data-a="audio/us_subject-verb.mp3"><span class="en">subJECT</span><span class="ja">動詞：従わせる</span></button><button class="q" data-pair="audio/us_subject-noun.mp3|audio/us_subject-verb.mp3" data-words="SUBject（名詞）|subJECT（動詞）" aria-label="SUBject か subJECT のどちらかが流れる">どっち？</button></div><p class="res" aria-live="polite"></p><div class="pair"><button class="w" data-a="audio/us_increase-noun.mp3"><span class="en">INcrease</span><span class="ja">名詞：増加</span></button><button class="w" data-a="audio/us_increase-verb.mp3"><span class="en">inCREASE</span><span class="ja">動詞：増える</span></button><button class="q" data-pair="audio/us_increase-noun.mp3|audio/us_increase-verb.mp3" data-words="INcrease（名詞）|inCREASE（動詞）" aria-label="INcrease か inCREASE のどちらかが流れる">どっち？</button></div><p class="res" aria-live="polite"></p></div>
+<ul class="notes"><li>7対とも同じ話者の録音。present は名詞の録音が無いので、強勢型が同じ形容詞（出席して）を使った</li><li>強勢が動くと母音も変わる：REcord /ˈrek.ə˞d/ と reCORD /rɪˈkɔːrd/ では re の母音が違う</li></ul>
+<div class="point"><b>ポイント</b>強勢の位置が品詞を示す。母音の質と長さも一緒に変わる。</div></section>
+<section id="fam"><h2><span class="no">3</span>語族：同じ語根でも強勢が動く</h2>
+<p class="lead">接尾辞が付くと、主強勢の位置が移ることがあります。縦に並べて聞き比べましょう。</p>
+<div class="card"><div class="fam"><p class="lab">photograph の語族</p><div class="row wide"><button class="w" data-a="audio/us_photograph.mp3"><span class="en">PHOtograph</span><span class="ja">写真</span></button><button class="w" data-a="audio/us_photography.mp3"><span class="en">phoTOGraphy</span><span class="ja">写真術</span></button><button class="w off" disabled><span class="en">photoGRAPHic</span><span class="ja">写真の</span><span class="na">録音なし</span></button></div><p class="sub">photographic は授業中だけ再生（公開できる録音が無い）</p></div><div class="fam"><p class="lab">economy の語族</p><div class="row wide"><button class="w" data-a="audio/us_economy.mp3"><span class="en">eCONomy</span><span class="ja">経済</span></button><button class="w" data-a="audio/us_economic.mp3"><span class="en">ecoNOMic</span><span class="ja">経済の</span></button></div><p class="sub">economic は別の話者</p></div><div class="fam"><p class="lab">nation の語族</p><div class="row wide"><button class="w" data-a="audio/us_nation.mp3"><span class="en">NAtion</span><span class="ja">国家</span></button><button class="w" data-a="audio/us_national.mp3"><span class="en">NAtional</span><span class="ja">国の</span></button><button class="w" data-a="audio/us_nationality.mp3"><span class="en">natioNALity</span><span class="ja">国籍</span></button></div><p class="sub">nationality は別の話者</p></div><div class="fam"><p class="lab">intellect の語族</p><div class="row wide"><button class="w" data-a="audio/us_intellect.mp3"><span class="en">INtellect</span><span class="ja">知性</span></button><button class="w" data-a="audio/us_intellectual.mp3"><span class="en">intelLECtual</span><span class="ja">知的な</span></button><button class="w" data-a="audio/us_intelligence.mp3"><span class="en">inTELligence</span><span class="ja">知能</span></button></div></div><div class="fam"><p class="lab">politics の語族</p><div class="row wide"><button class="w" data-a="audio/us_political.mp3"><span class="en">poLITical</span><span class="ja">政治の</span></button><button class="w" data-a="audio/us_politician.mp3"><span class="en">poliTIcian</span><span class="ja">政治家</span></button></div><p class="sub">politician は別の話者</p></div><div class="fam"><p class="lab">person・benefit の語族</p><div class="row wide"><button class="w" data-a="audio/us_person.mp3"><span class="en">PERson</span><span class="ja">人</span></button><button class="w" data-a="audio/us_personification.mp3"><span class="en">personifiCAtion</span><span class="ja">擬人化</span></button><button class="w" data-a="audio/us_benefit.mp3"><span class="en">BENefit</span><span class="ja">利益</span></button><button class="w" data-a="audio/us_beneficent.mp3"><span class="en">beNEFicent</span><span class="ja">慈善心に富む</span></button></div><p class="sub">personification・beneficent は別の話者</p></div></div>
+<div class="point"><b>ポイント</b>強勢が移ると、強勢を失った音節の母音は [ə] などに弱まる。</div></section>
+<section id="aff"><h2><span class="no">4</span>接辞から強勢を予測する</h2>
+<div class="card"><p class="lab">-ee・-eer：接尾辞そのものが強い</p><div class="row"><button class="w" data-a="audio/us_employee.mp3"><span class="en">employEE</span><span class="ja">従業員</span></button><button class="w" data-a="audio/us_engineer.mp3"><span class="en">engiNEER</span><span class="ja">技師</span></button></div><p class="lab">-ic・-ity：直前の音節が強い</p><div class="row"><button class="w" data-a="audio/us_economic.mp3"><span class="en">ecoNOMic</span><span class="ja">経済の</span></button><button class="w" data-a="audio/us_electricity.mp3"><span class="en">elecTRICity</span><span class="ja">電気</span></button><button class="w off" disabled><span class="en">photoGRAPHic</span><span class="ja">写真の</span><span class="na">録音なし</span></button></div><p class="lab">-ness・-less・-ful・-ly：語幹の強勢をそのまま保つ</p><div class="row"><button class="w" data-a="audio/us_happiness.mp3"><span class="en">HAPpiness</span><span class="ja">幸福</span></button><button class="w" data-a="audio/us_careless.mp3"><span class="en">CAREless</span><span class="ja">不注意な</span></button><button class="w" data-a="audio/us_helpful.mp3"><span class="en">HELPful</span><span class="ja">役立つ</span></button><button class="w" data-a="audio/us_slowly.mp3"><span class="en">SLOWly</span><span class="ja">ゆっくり</span></button></div><p class="sub">employee は emPLOYee と読む人も多い。接辞は強勢の有力な手がかりだが、最後は辞書で確かめる。</p></div>
+<div class="card"><h3>複合語は前が強い</h3><div class="row"><button class="w" data-a="audio/us_goldfish.mp3"><span class="en">GOLDfish</span><span class="ja">金魚</span></button><button class="w" data-a="audio/us_newspaper.mp3"><span class="en">NEWSpaper</span><span class="ja">新聞</span></button><button class="w" data-a="audio/us_blackbird.mp3"><span class="en">BLACKbird</span><span class="ja">クロウタドリ</span></button><button class="w" data-a="audio/ll_hotdog.mp3"><span class="en">HOTdog</span><span class="ja">ホットドッグ</span></button></div><p class="sub">GOLDfish（金魚）と gold FISH（金色の魚）のように、句は後ろの語が強い。</p><h3 class="mt">文の中で強勢が前へ移る語</h3><div class="row"><button class="w" data-a="audio/us_thirteen.mp3"><span class="en">thirTEEN</span><span class="ja">13</span></button><button class="w" data-a="audio/us_afternoon.mp3"><span class="en">afterNOON</span><span class="ja">午後</span></button><button class="w" data-a="audio/us_Japanese.mp3"><span class="en">JapaNESE</span><span class="ja">日本の</span></button></div><p class="sub">単独では後ろが強いが、THIRteen MEN・JAPanese FOOD のように後ろに強い語が続くと、前へ移ることがある。</p></div>
+<div class="point"><b>ポイント</b>接辞で候補を絞り、辞書と音声で確かめる。</div>
+<p class="notes">授業スライドの例（深澤 2015 の語・二語表現・文）の音声は、著作権の都合で授業中だけ再生します。</p></section>
+</main>
+<footer id="credits">
+<h2>音声の出典</h2>
+<p>音声はすべて Wikimedia Commons（Lingua Libre を含む）で公開されている録音です。授業用に、前後の無音を切り、音量をそろえ、MP3 に変換しました。CC BY-SA の録音を加工した音声は、同じライセンス（CC BY-SA）で利用できます。話者名から Commons の元ファイルに移れます。</p>
+<details><summary>一覧を開く（68 件）</summary>
+<table><tbody>
+<tr><td>table</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-table.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>people</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-people.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>happy</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-happy.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>doctor</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-doctor.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>music</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-music.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>open</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-open.ogg">TheDaveRoss</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>sister</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-sister.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>winter</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-winter.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>forward</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-forward.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>police</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-police.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>prefer</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-prefer.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>believe</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-believe.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>forget</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-forget.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>begin</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-begin.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>enjoy</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-enjoy.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>alone</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-alone.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>awake</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-awake.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>average</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-average.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>generous</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-generous.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>comfortable</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-comfortable.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>contribute</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-contribute.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>important</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-important.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>recommend</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-recommend.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>introduce</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-introduce.ogg">TreeMama</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>record-noun</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-record-noun.ogg">Dvortygirl</a></td><td>Public domain</td></tr>
+<tr><td>record-verb</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-record-verb.ogg">Dvortygirl</a></td><td>Public domain</td></tr>
+<tr><td>present-adjective</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-present-adjective.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>present-verb1</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-present-verb1.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>permit-noun</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-permit-noun.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>permit-verb</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-permit-verb.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>object-noun</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-object-noun.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>object-verb</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-object-verb.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>protest-noun</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-protest-noun.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>protest-verb</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-protest-verb.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>subject-noun</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-subject-noun.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>subject-verb</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-subject-verb.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>increase-noun</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-increase-noun.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>increase-verb</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-increase-verb.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>photograph</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-photograph.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>photography</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-photography.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>economy</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-economy.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>economic</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-economic.ogg">Persent101</a></td><td><a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">CC BY-SA 4.0</a></td></tr>
+<tr><td>nation</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-nation.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>national</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-national.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>nationality</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-nationality.ogg">Neskaya</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>intellect</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-intellect.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>intellectual</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-intellectual.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>intelligence</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-intelligence.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>political</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-political.ogg">Dvortygirl</a></td><td>Public domain</td></tr>
+<tr><td>politician</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-politician.ogg">Neskaya</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>person</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-person.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>personification</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-personification.ogg">Sylvanmoon</a></td><td><a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">CC BY-SA 4.0</a></td></tr>
+<tr><td>benefit</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-benefit.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>beneficent</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-beneficent.ogg">Neskaya</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>employee</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-employee.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>engineer</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-engineer.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>electricity</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-electricity.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>happiness</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-happiness.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>careless</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-careless.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>helpful</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-helpful.ogg">Willy Skillets</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>slowly</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-slowly.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>goldfish</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-goldfish.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>newspaper</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-newspaper.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>blackbird</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-blackbird.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>hotdog</td><td><a href="https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-hot_dog.wav">Wodencafe</a></td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">CC0</a></td></tr>
+<tr><td>thirteen</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-thirteen.ogg">TheDaveRoss</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>afternoon</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-afternoon.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>Japanese</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-Japanese.ogg">（記載なし）</a></td><td>Public domain</td></tr>
+</tbody></table></details>
+<p>ページ：英語音声学（目白大学）授業資料</p>
+</footer>
+<script>
+let cur=null;const cache={};
+function aud(src){if(!cache[src]){cache[src]=new Audio(src);cache[src].preload="auto"}return cache[src]}
+function play(src,el){if(cur){cur.pause();cur.currentTime=0}const a=aud(src);cur=a;a.currentTime=0;
+ if(el){el.classList.add('on');a.onended=()=>el.classList.remove('on');setTimeout(()=>el.classList.remove('on'),1500)}
+ a.play().catch(()=>{})}
+document.addEventListener('click',e=>{
+ const w=e.target.closest('.w[data-a]');const q=e.target.closest('.q');
+ if(q){const pr=q.parentElement;const srcs=q.dataset.pair.split('|'),ws=q.dataset.words.split('|');
+  if(pr.dataset.ans===undefined||pr.dataset.ans===''){pr.dataset.ans=Math.random()<.5?0:1}
+  pr.classList.add('ask');pr.nextElementSibling.textContent='聞こえた方をタップ（もう一度：どっち？）';
+  play(srcs[+pr.dataset.ans],q);return}
+ if(w){const pr=w.parentElement;
+  if(pr.classList.contains('ask')){const ws=pr.querySelector('.q').dataset.words.split('|');const i=[...pr.querySelectorAll('.w')].indexOf(w);
+   const ok=i===+pr.dataset.ans;const r=pr.nextElementSibling;
+   r.innerHTML=ok?'<span class="ok">○ 正解</span>：'+ws[pr.dataset.ans]:'<span class="ng">× 今のは</span> '+ws[pr.dataset.ans];
+   pr.classList.remove('ask');pr.dataset.ans=''}
+  play(w.dataset.a,w)}
+});
+</script>
+</body></html>

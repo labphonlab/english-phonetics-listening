@@ -57,6 +57,8 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;cursor
 box-shadow:0 2px 0 rgba(0,0,0,.15);padding:8px}
 .choice .en{font-size:26px;font-weight:700;line-height:1.15}.choice .ja{font-size:13px;opacity:.85}
 .choice:active{transform:translateY(1px)}
+.choices.n3{grid-template-columns:repeat(3,1fr)}.choices.n4{grid-template-columns:repeat(4,1fr)}.choices.n5{grid-template-columns:repeat(5,1fr)}
+.choices.n3,.choices.n4,.choices.n5{gap:8px}.n3 .choice,.n4 .choice,.n5 .choice{min-height:84px;padding:6px 2px}.n4 .choice .en,.n5 .choice .en{font-size:21px}.n5 .choice .ja{font-size:11px}
 .score{font-size:44px;font-weight:800;text-align:center;margin:4px 0}
 .status{text-align:center;font-weight:700;margin:6px 0 12px}.ok{color:var(--ok)}.ng{color:var(--ng)}
 ul.wrong{padding-left:0;list-style:none;margin:0}ul.wrong li{border-top:1px solid var(--line);padding:8px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -155,16 +157,16 @@ $("go").onclick=()=>{
   show();
 };
 function opts(it){
-  if(it.kind==="count")return it.opts.map(o=>({en:o,ja:""}));
+  if(it.kind!=="pair")return it.opts.map((o,i)=>({en:o,ja:(it.optJa||[])[i]||""}));
   return [{en:it.a,ja:it.aJa},{en:it.b,ja:it.bJa}];
 }
-function src(it){return it.kind==="count"?it.src:it[it.target+"Src"]}
-function right(it){return it.kind==="count"?it.ans:it[it.target]}
+function src(it){return it.kind!=="pair"?it.src:it[it.target+"Src"]}
+function right(it){return it.kind!=="pair"?it.ans:it[it.target]}
 function show(){
   const it=order[k];
   $("no").textContent="問 "+(k+1)+" / "+order.length;$("barin").style.width=(k/order.length*100)+"%";
-  $("prompt").innerHTML=it.kind==="count"?"<span style='font-size:28px'>"+it.word+"</span><br>何音節に聞こえる？":"流れたのはどっち？";
-  const box=$("choices");box.innerHTML="";
+  $("prompt").innerHTML=it.kind!=="pair"?"<span style='font-size:28px'>"+it.word+"</span><br>"+(it.ask||"何音節に聞こえる？"):"流れたのはどっち？";
+  const box=$("choices");box.innerHTML="";box.className="choices n"+opts(it).length;
   opts(it).forEach((o,i)=>{const b=document.createElement("button");b.className="choice";b.disabled=true;
     b.innerHTML="<span class='en'>"+o.en+"</span>"+(o.ja?"<span class='ja'>"+o.ja+"</span>":"");b.onclick=()=>answer(i);box.appendChild(b)});
   setTimeout(()=>box.querySelectorAll(".choice").forEach(b=>b.disabled=false),350);  // 連打で次の問題に答えないように
@@ -178,7 +180,7 @@ function hear(){
 $("again").onclick=hear;
 function answer(i){
   const it=order[k];document.querySelectorAll(".choice").forEach(x=>x.disabled=true);
-  res.push({sec:it.sec,contrast:it.contrast,a:it.kind==="count"?it.word:it.a,b:it.kind==="count"?"":it.b,
+  res.push({sec:it.sec,contrast:it.contrast,a:it.kind!=="pair"?it.word:it.a,b:it.kind!=="pair"?"":it.b,
     target:right(it),answer:opts(it)[i].en,plays,ms:Date.now()-tq,tSrc:src(it)});
   k++;
   if(k<order.length){show()}else{finish()}
@@ -230,7 +232,7 @@ if(API){(store.get("lt-pending")||[]).forEach(p=>post(p).then(()=>store.set("lt-
 
 
 def render(its, test_id, lecture, title, intro):
-    """its: 問題の並び（kind=pair か count）。test_id はスプレッドシートの「テスト」列に入る"""
+    """its: 問題の並び（kind=pair か count・pick。count・pick は word・src・opts・ans、pick は ask・optJa も）。test_id はスプレッドシートの「テスト」列に入る"""
     return (PAGE.replace("{items}", json.dumps(its, ensure_ascii=False)).replace("{total}", str(len(its)))
             .replace("{testid}", test_id).replace("{maxplays}", str(MAX_PLAYS))
             .replace("{lecture}", lecture).replace("{title}", title).replace("{intro}", intro)
