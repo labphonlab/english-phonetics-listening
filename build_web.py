@@ -282,6 +282,7 @@ main{max-width:640px;margin:0 auto}a{display:block;background:var(--card);border
 <a href="lecture03/">第3回　子音（3.1 語対・3.2 文脈）</a>
 <a href="lecture04/">第4回　子音連続と音節</a>
 <a href="lecture05/">第5回　語強勢</a>
+<a href="lecture06/">第6回　文の卓立とリズム</a>
 </main></body></html>
 """
 
@@ -308,6 +309,8 @@ def main():
     lecture04_page.build(PAGE, CSS, JS)
     import lecture05_page   # 第5回（語強勢）
     lecture05_page.build(PAGE, CSS, JS)
+    import lecture06_page   # 第6回（文の卓立とリズム）
+    lecture06_page.build(PAGE, CSS, JS)
     open(os.path.join(WEB, "index.html"), "w").write(INDEX)
     open(os.path.join(WEB, ".nojekyll"), "w").write("")
     print(len(USED), "files ->", ad)

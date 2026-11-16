@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#8C3A26">
+<title>文の卓立とリズムを聞いて練習</title>
+<style>
+:root{--bg:#F6F4EF;--card:#FFFFFF;--ink:#1B2238;--sub:#5B6573;--line:#E2DED5;--btn:#F2A93B;--btn-ink:#1B2238;--btn-on:#D98A12;
+--a:#1F8A7D;--b:#D6452B;--band:#2B3A67;--band-ink:#FFFFFF;--hd:#8C3A26;--ok:#1F8A7D;--ng:#D6452B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181F;--card:#1F242E;--ink:#ECEEF2;--sub:#A3ABB8;--line:#323947;
+--btn:#E9A23A;--btn-ink:#1B1B1B;--btn-on:#FFC266;--a:#4CC3B3;--b:#FF7A63;--band:#2B3A67;--hd:#B9584A}}
+:root[data-theme="dark"]{--bg:#15181F;--card:#1F242E;--ink:#ECEEF2;--sub:#A3ABB8;--line:#323947;--btn:#E9A23A;--btn-ink:#1B1B1B;--btn-on:#FFC266;--a:#4CC3B3;--b:#FF7A63;--hd:#B9584A}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Segoe UI",sans-serif;
+line-height:1.6;font-size:17px;padding-bottom:env(safe-area-inset-bottom)}
+header{background:var(--hd);color:#fff;padding:calc(18px + env(safe-area-inset-top)) 16px 16px}
+header p{margin:0;font-size:14px;opacity:.85}
+header h1{margin:2px 0 0;font-size:24px;line-height:1.3}
+nav{position:sticky;top:0;z-index:5;display:flex;gap:8px;padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
+nav a{flex:1;text-align:center;padding:8px 4px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;background:var(--card)}
+main{max-width:640px;margin:0 auto;padding:0 16px}
+section{padding-top:8px;scroll-margin-top:56px}
+h2{font-size:21px;margin:22px 0 6px;line-height:1.35}
+h2 .no{display:inline-block;margin-right:8px;color:var(--hd)}
+.lead{color:var(--sub);font-size:15px;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:0 0 12px}
+h3.ipa{margin:0 0 8px;font-size:19px;color:var(--sub);font-family:"Arial Unicode MS","Lucida Grande","Noto Sans",sans-serif;font-weight:700}
+.pair{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:stretch}
+.pair+.res{min-height:0;margin:2px 0 8px;font-size:15px;text-align:center}
+.res:empty{margin:0 0 8px}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;cursor:pointer;touch-action:manipulation}
+.w{min-height:64px;border:0;border-radius:14px;background:var(--btn);color:var(--btn-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;
+box-shadow:0 2px 0 rgba(0,0,0,.15);transition:transform .06s}
+.w .en{font-size:21px;font-weight:700;line-height:1.15}
+.w .en::before{content:"▶ ";font-size:13px;vertical-align:2px}
+.w .ja{font-size:13px;line-height:1.3;opacity:.85}
+.w .na{font-size:12px}
+.w:active,.w.on{transform:translateY(1px);background:var(--btn-on)}
+.w.off{background:var(--line);color:var(--sub);box-shadow:none}
+.w.off .en::before{content:""}
+.q{min-height:64px;width:64px;border:2px solid var(--btn);border-radius:14px;background:transparent;color:var(--ink);font-size:13px;font-weight:700;line-height:1.2;padding:4px}
+.q:active,.q.on{background:var(--btn);color:var(--btn-ink)}
+.pair.ask .w{outline:3px dashed var(--btn);outline-offset:2px}
+.ok{color:var(--ok);font-weight:700}.ng{color:var(--ng);font-weight:700}
+.sent{margin:0 0 10px;font-size:18px;line-height:1.5;display:flex;gap:10px}
+.sent .n{font-weight:700;color:var(--sub);font-style:normal}
+.ca{color:var(--a)}.cb{color:var(--b)}
+.sub{font-size:14px;color:var(--sub);margin:6px 0 6px}
+.point{background:var(--band);color:var(--band-ink);border-radius:12px;padding:12px 14px;font-size:15px;margin:4px 0 8px}
+.point b{color:#F2A93B;margin-right:10px}
+.notes{color:var(--sub);font-size:13px;padding-left:20px;margin:6px 0 0}
+footer{max-width:640px;margin:28px auto 0;padding:0 16px 32px;color:var(--sub);font-size:13px}
+footer h2{font-size:16px;color:var(--ink)}
+footer table{width:100%;border-collapse:collapse;font-size:12.5px}
+footer td{border-top:1px solid var(--line);padding:5px 4px;vertical-align:top}
+footer a{color:inherit}
+details summary{cursor:pointer;font-weight:600;color:var(--ink);padding:6px 0}
+@media (max-width:360px){.w .en{font-size:18px}.q{width:54px}}
+
+h3{margin:0 0 8px;font-size:17px}h3.mt{margin-top:14px}
+.lab{margin:10px 0 6px;font-size:14px;color:var(--sub);font-weight:600}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:6px}
+.row.wide{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.row .w{min-height:58px;padding:6px 2px}.row .w .en{font-size:17px;white-space:nowrap}.row .w .en::before{font-size:11px}
+.row.wide .w .en{white-space:normal;font-size:16px;line-height:1.2}
+.sub{font-size:14px;color:var(--sub);margin:4px 0 10px}
+nav{gap:6px;overflow-x:auto;padding:8px 12px}nav a{flex:1 0 auto;padding:8px 10px;font-size:14px}
+</style></head>
+<body>
+<header><p>英語音声学　第6回</p><h1>文の卓立とリズムを聞いて練習</h1></header>
+<nav><a href="#ph">句の強弱</a><a href="#fw">機能語</a><a href="#ft">強弱型</a><a href="#wk">脱落・モーラ</a><a href="#credits">出典</a></nav>
+<main>
+<section id="ph"><h2><span class="no">1</span>短い句の強弱</h2>
+<p class="lead">句をタップすると音声が流れます。<b>大文字</b>が強く読まれる語、小文字が弱く読まれる語です。弱い語（of・and・at・to など）は短く、あいまいな母音 [ə] になりやすい。</p>
+<div class="card"><h3>機能語が1つ入った句</h3><div class="row wide"><button class="w" data-a="audio/us_piece_of_cake.mp3"><span class="en">PIECE of CAKE</span><span class="ja">朝飯前</span></button><button class="w" data-a="audio/us_now_and_then.mp3"><span class="en">NOW and THEN</span><span class="ja">ときどき</span></button><button class="w" data-a="audio/us_and_so_on.mp3"><span class="en">and SO ON</span><span class="ja">など</span></button><button class="w" data-a="audio/us_at_least.mp3"><span class="en">at LEAST</span><span class="ja">少なくとも</span></button><button class="w" data-a="audio/us_of_course.mp3"><span class="en">of COURSE</span><span class="ja">もちろん</span></button><button class="w" data-a="audio/us_have_to.mp3"><span class="en">HAVE to</span><span class="ja">〜しなければならない</span></button></div><h3 class="mt">内容語が2つ以上ある句</h3><div class="row wide"><button class="w" data-a="audio/us_on_the_other_hand.mp3"><span class="en">on the OTHer HAND</span><span class="ja">一方で</span></button><button class="w" data-a="audio/us_how_are_you.mp3"><span class="en">HOW are YOU?</span><span class="ja">元気？</span></button><button class="w" data-a="audio/us_I_dont_know.mp3"><span class="en">I DON&#x27;T KNOW</span><span class="ja">わからない</span></button><button class="w" data-a="audio/us_I_love_you.mp3"><span class="en">I LOVE you</span><span class="ja">愛してる</span></button></div><h3 class="mt">あいさつ：後ろの語が強い</h3><div class="row wide"><button class="w" data-a="audio/us_good_morning.mp3"><span class="en">good MORNing</span><span class="ja">おはよう</span></button><button class="w" data-a="audio/us_good_afternoon.mp3"><span class="en">good afterNOON</span><span class="ja">こんにちは</span></button><button class="w" data-a="audio/us_good_night.mp3"><span class="en">good NIGHT</span><span class="ja">おやすみ</span></button><button class="w" data-a="audio/us_good_luck.mp3"><span class="en">good LUCK</span><span class="ja">がんばって</span></button></div><p class="sub">大文字はこの録音でのふつうの読み方。how are you は HOW are YOU とも how ARE you とも言う。</p></div>
+<div class="point"><b>ポイント</b>内容語が柱、機能語は軽く短く。全部の語を同じ強さで読まない。</div></section>
+<section id="fw"><h2><span class="no">2</span>機能語：単独と句の中</h2>
+<p class="lead">単独で読むと強い形（強形）、句の中では弱い形（弱形）になります。左右を聞き比べましょう。</p>
+<div class="card"><p class="lab">and：単独 /ænd/ → 句の中 [ən]・[n]</p><div class="row wide"><button class="w" data-a="audio/ll_and.mp3"><span class="en">and（単独）</span><span class="ja">〜と</span></button><button class="w" data-a="audio/us_now_and_then.mp3"><span class="en">NOW and THEN</span><span class="ja">ときどき</span></button><button class="w" data-a="audio/us_and_so_on.mp3"><span class="en">and SO ON</span><span class="ja">など</span></button></div><p class="lab">to：単独 /tuː/ → 句の中 [tə]</p><div class="row wide"><button class="w" data-a="audio/ll_to.mp3"><span class="en">to（単独）</span><span class="ja">〜へ</span></button><button class="w" data-a="audio/us_have_to.mp3"><span class="en">HAVE to</span><span class="ja">〜しなければならない</span></button></div><p class="lab">of：句の中 [əv]</p><div class="row wide"><button class="w" data-a="audio/us_piece_of_cake.mp3"><span class="en">PIECE of CAKE</span><span class="ja">朝飯前</span></button><button class="w" data-a="audio/us_of_course.mp3"><span class="en">of COURSE</span><span class="ja">もちろん</span></button></div><p class="sub">単独の and・to は別の話者（Lingua Libre）。弱形のしくみは第7章で。</p></div>
+<div class="point"><b>ポイント</b>機能語は、ふつうは弱形。対比・訂正のときだけ強形になる。</div></section>
+<section id="ft"><h2><span class="no">3</span>語の強弱型：●・ と ・●</h2>
+<p class="lead">英語の語は「強い音節＋弱い音節」の型がとても多い。強い音節で手をたたいてみましょう。</p>
+<div class="card"><h3>強弱型 ●・</h3><div class="row"><button class="w" data-a="audio/us_mother.mp3"><span class="en">MOther</span><span class="ja">母</span></button><button class="w" data-a="audio/us_teacher.mp3"><span class="en">TEAcher</span><span class="ja">先生</span></button><button class="w" data-a="audio/us_happy.mp3"><span class="en">HAPpy</span><span class="ja">幸せな</span></button><button class="w" data-a="audio/us_candle.mp3"><span class="en">CANdle</span><span class="ja">ろうそく</span></button></div><h3 class="mt">弱強の並び ・●</h3><div class="row"><button class="w" data-a="audio/us_around.mp3"><span class="en">aROUND</span><span class="ja">周りに</span></button><button class="w" data-a="audio/us_believe.mp3"><span class="en">beLIEVE</span><span class="ja">信じる</span></button><button class="w" data-a="audio/us_enjoy.mp3"><span class="en">enJOY</span><span class="ja">楽しむ</span></button><button class="w" data-a="audio/us_today.mp3"><span class="en">toDAY</span><span class="ja">今日</span></button></div><p class="sub">8語とも同じ話者。文の中のリズムの単位（フット）は、語の切れ目と一致するとは限らない。</p></div>
+<div class="point"><b>ポイント</b>強い音節を柱にして、弱い音節は軽く短く。</div></section>
+<section id="wk"><h2><span class="no">4</span>弱い音節の脱落・日本語のモーラ</h2>
+<div class="card"><p class="lab">camera：辞書 /ˈkæm.ər.ə/ → [ˈkæm.rə]</p><div class="row"><button class="w" data-a="audio/us_camera.mp3"><span class="en">CAMera</span><span class="ja">カメラ</span></button><button class="w" data-a="audio/us_musician.mp3"><span class="en">muSIcian</span><span class="ja">音楽家</span></button></div><p class="sub">この camera の録音は、m のすぐあとに r が続く2音節（間に母音がない）。</p><p class="lab">日本語はモーラ（拍）で刻む</p><div class="row"><button class="w" data-a="audio/ja_sakura.mp3"><span class="en">さくら</span><span class="ja">さ・く・ら（3拍）</span></button><button class="w" data-a="audio/ja_tokyo.mp3"><span class="en">とうきょう</span><span class="ja">と・う・きょ・う（4拍）</span></button></div><p class="sub">英語は強い音節の山、日本語はモーラの刻みが目立つ。どちらも「傾向」で、厳密に等間隔ではない。</p></div>
+<div class="point"><b>ポイント</b>英語の弱い音節は短くなり、母音が弱まったり消えたりする。</div>
+<p class="notes">授業スライドの文の例（Give it to him・Come to tea with John … など、深澤 2015 の音声）は、著作権の都合で授業中だけ再生します。公開ライセンスの文の録音が見つからなかったので、このページは句と語で練習します。</p></section>
+</main>
+<footer id="credits">
+<h2>音声の出典</h2>
+<p>音声はすべて Wikimedia Commons（Lingua Libre を含む）で公開されている録音です。授業用に、前後の無音を切り、音量をそろえ、MP3 に変換しました。CC BY-SA の録音を加工した音声は、同じライセンス（CC BY-SA）で利用できます。話者名から Commons の元ファイルに移れます。</p>
+<details><summary>一覧を開く（28 件）</summary>
+<table><tbody>
+<tr><td>piece of cake</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-piece_of_cake.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>now and then</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-now_and_then.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>and so on</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-and_so_on.ogg">Steve Shives</a></td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">CC0</a></td></tr>
+<tr><td>at least</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-at_least.ogg">Steve Shives</a></td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">CC0</a></td></tr>
+<tr><td>of course</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-of_course.ogg">Scriptur</a></td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">CC0</a></td></tr>
+<tr><td>have to</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-have_to.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>on the other hand</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-on_the_other_hand.ogg">Steve Shives</a></td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">CC0</a></td></tr>
+<tr><td>how are you?</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-how_are_you.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>i don&#x27;t know</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-I_don&#x27;t_know.ogg">Steve Shives</a></td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">CC0</a></td></tr>
+<tr><td>i love you</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-I_love_you.ogg">Dvortygirl</a></td><td>Public domain</td></tr>
+<tr><td>good morning</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-good_morning.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>good afternoon</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-good_afternoon.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>good night</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-good_night.ogg">Dvortygirl</a></td><td>Public domain</td></tr>
+<tr><td>good luck</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-good_luck.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>and</td><td><a href="https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-and.wav">Grendelkhan</a></td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">CC0</a></td></tr>
+<tr><td>to</td><td><a href="https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-to.wav">Grendelkhan</a></td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">CC0</a></td></tr>
+<tr><td>mother</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-mother.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>teacher</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-teacher.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>happy</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-happy.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>candle</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-candle.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>around</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-around.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>believe</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-believe.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>enjoy</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-enjoy.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>today</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-today.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>camera</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-camera.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>musician</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-musician.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>さくら</td><td><a href="https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Higa4-さくら.wav">Higa4</a></td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">CC0</a></td></tr>
+<tr><td>とうきょう</td><td><a href="https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-とうきょう.wav">Fukujinzuke</a></td><td><a href="https://creativecommons.org/licenses/by/4.0/deed.ja">CC BY 4.0</a></td></tr>
+</tbody></table></details>
+<p>ページ：英語音声学（目白大学）授業資料</p>
+</footer>
+<script>
+let cur=null;const cache={};
+function aud(src){if(!cache[src]){cache[src]=new Audio(src);cache[src].preload="auto"}return cache[src]}
+function play(src,el){if(cur){cur.pause();cur.currentTime=0}const a=aud(src);cur=a;a.currentTime=0;
+ if(el){el.classList.add('on');a.onended=()=>el.classList.remove('on');setTimeout(()=>el.classList.remove('on'),1500)}
+ a.play().catch(()=>{})}
+document.addEventListener('click',e=>{
+ const w=e.target.closest('.w[data-a]');const q=e.target.closest('.q');
+ if(q){const pr=q.parentElement;const srcs=q.dataset.pair.split('|'),ws=q.dataset.words.split('|');
+  if(pr.dataset.ans===undefined||pr.dataset.ans===''){pr.dataset.ans=Math.random()<.5?0:1}
+  pr.classList.add('ask');pr.nextElementSibling.textContent='聞こえた方をタップ（もう一度：どっち？）';
+  play(srcs[+pr.dataset.ans],q);return}
+ if(w){const pr=w.parentElement;
+  if(pr.classList.contains('ask')){const ws=pr.querySelector('.q').dataset.words.split('|');const i=[...pr.querySelectorAll('.w')].indexOf(w);
+   const ok=i===+pr.dataset.ans;const r=pr.nextElementSibling;
+   r.innerHTML=ok?'<span class="ok">○ 正解</span>：'+ws[pr.dataset.ans]:'<span class="ng">× 今のは</span> '+ws[pr.dataset.ans];
+   pr.classList.remove('ask');pr.dataset.ans=''}
+  play(w.dataset.a,w)}
+});
+</script>
+</body></html>
