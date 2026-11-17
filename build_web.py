@@ -178,8 +178,8 @@ line-height:1.6;font-size:17px;padding-bottom:env(safe-area-inset-bottom)}
 header{background:var(--hd);color:#fff;padding:calc(18px + env(safe-area-inset-top)) 16px 16px}
 header p{margin:0;font-size:14px;opacity:.85}
 header h1{margin:2px 0 0;font-size:24px;line-height:1.3}
-nav{position:sticky;top:0;z-index:5;display:flex;gap:8px;padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
-nav a{flex:1;text-align:center;padding:8px 4px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;background:var(--card)}
+nav{position:sticky;top:0;z-index:5;display:flex;gap:8px;overflow-x:auto;padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
+nav a{flex:1;text-align:center;padding:8px 4px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;background:var(--card);white-space:nowrap}
 main{max-width:640px;margin:0 auto;padding:0 16px}
 section{padding-top:8px;scroll-margin-top:56px}
 h2{font-size:21px;margin:22px 0 6px;line-height:1.35}
@@ -250,7 +250,7 @@ PAGE = """<!doctype html>
 <style>{css}</style></head>
 <body>
 <header><p>英語音声学　第3回</p><h1>子音を聞いて練習</h1></header>
-<nav><a href="#s31">3.1 語対</a><a href="#s32">3.2 文脈</a><a href="#credits">出典</a></nav>
+<nav><a href="#s31">3.1 語対</a><a href="#s32">3.2 文脈</a><a href="speak.html">話して練習</a><a href="#credits">出典</a></nav>
 <main>
 {body}
 </main>
@@ -276,13 +276,19 @@ INDEX = """<!doctype html>
 :root{--bg:#F6F4EF;--ink:#1B2238;--card:#fff;--line:#E2DED5}
 @media (prefers-color-scheme:dark){:root{--bg:#15181F;--ink:#ECEEF2;--card:#1F242E;--line:#323947}}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;padding:24px 16px;font-size:17px}
-main{max-width:640px;margin:0 auto}a{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;color:inherit;text-decoration:none;margin:10px 0;font-weight:600}
+main{max-width:640px;margin:0 auto}h2{font-size:19px;margin:28px 0 4px}.sub{font-size:14px;opacity:.75;margin:0 0 4px}a{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;color:inherit;text-decoration:none;margin:10px 0;font-weight:600}
 </style></head><body><main>
 <h1>英語音声学　聞いて練習</h1>
 <a href="lecture03/">第3回　子音（3.1 語対・3.2 文脈）</a>
 <a href="lecture04/">第4回　子音連続と音節</a>
 <a href="lecture05/">第5回　語強勢</a>
 <a href="lecture06/">第6回　文の卓立とリズム</a>
+<h2>話して練習（録音して聞き比べ）</h2>
+<p class="sub">お手本を聞き、自分の声を録音して、声紋・声の高さの図で比べます。録音はスマホの中だけで使い、送信しません。</p>
+<a href="lecture03/speak.html">第3回　子音</a>
+<a href="lecture04/speak.html">第4回　子音連続と音節</a>
+<a href="lecture05/speak.html">第5回　語強勢</a>
+<a href="lecture06/speak.html">第6回　文の卓立とリズム</a>
 </main></body></html>
 """
 
@@ -311,6 +317,9 @@ def main():
     lecture05_page.build(PAGE, CSS, JS)
     import lecture06_page   # 第6回（文の卓立とリズム）
     lecture06_page.build(PAGE, CSS, JS)
+    import speak_page   # 話して練習（lectureNN/speak.html）と発音テスト（lectureNN/record.html）
+    for no, src in ((3, source), (4, lecture04_page.source), (5, lecture05_page.source), (6, lecture06_page.source)):
+        speak_page.build(no, src)
     open(os.path.join(WEB, "index.html"), "w").write(INDEX)
     open(os.path.join(WEB, ".nojekyll"), "w").write("")
     print(len(USED), "files ->", ad)

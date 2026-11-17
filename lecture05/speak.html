@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1F6F64">
+<title>語強勢を話して練習</title>
+<link rel="stylesheet" href="../speak/speak.css?v=a00a451f">
+</head>
+<body>
+<header><p>英語音声学　第5回</p><h1>語強勢を話して練習</h1></header>
+<main>
+<div class="banner" id="inapp" hidden></div>
+<div id="list-view">
+ <div class="card">
+  <p>項目をタップすると練習画面が開きます。<b>お手本</b>を聞く → <b>録音</b> → <b>自分</b>の声を聞く → <b>比べる</b>（お手本のすぐあとに自分の声）。お手本と自分の声を、同じ時間の目盛りの図で見比べられます。</p>
+  <p class="sub">録音はこのスマホの中だけで使い、どこにも送信しません（ページを閉じると消えます）。自己評価（0・1・2）だけがこの端末に残ります。静かな場所で、スマホを口から20 cmほど離して録音してください。</p>
+  <p class="summary" id="summary"></p>
+ </div>
+ <div id="list"></div>
+ <p class="sub"><a href="index.html" style="color:inherit">聞いて練習（第5回）へ</a></p>
+</div>
+<div id="item-view" hidden>
+ <div class="topbar"><button class="linkish" id="i-back" type="button">← 一覧</button><span class="count" id="i-count"></span></div>
+ <p class="secname" id="i-sec"></p>
+ <div class="card prompt"><p class="ctx" id="i-ctx" hidden></p><div class="text" id="i-text" lang="en"></div><p class="note" id="i-note" hidden></p></div>
+ <div class="check" id="i-check" hidden></div>
+ <div class="ctrl">
+  <button id="b-model" type="button"><i>▶</i><span>お手本</span></button>
+  <button id="b-rec" class="rec" type="button"><i>●</i><span>録音</span></button>
+  <button id="b-self" type="button" disabled><i>▶</i><span>自分</span></button>
+  <button id="b-both" type="button" disabled><i>⇄</i><span>比べる</span></button>
+ </div>
+ <div class="meter" id="meter"><i></i></div>
+ <p class="msg" id="rec-msg" aria-live="polite"></p>
+ <div class="tabs" id="tabs"><button type="button" data-view="spec">声紋</button><button type="button" data-view="pitch">高さ・強さ</button></div>
+ <div class="plot" id="row-model"><div class="lab"><span>お手本</span><span id="d-model"></span></div><div class="cv"><canvas id="c-model"></canvas><div class="ph" id="ph-model" hidden></div></div></div>
+ <div class="plot"><div class="lab"><span>あなた</span><span id="d-self"></span></div><div class="cv"><canvas id="c-self"></canvas><div class="ph" id="ph-self" hidden></div></div></div>
+ <p class="legend" id="legend"></p>
+ <div class="card rate"><p>自己評価</p><div id="rate">
+  <button type="button" data-v="0"><b>0</b><span>まだ難しい</span></button>
+  <button type="button" data-v="1"><b>1</b><span>意識すればできる</span></button>
+  <button type="button" data-v="2"><b>2</b><span>安定してできる</span></button></div></div>
+ <div class="navrow"><button id="i-prev" type="button">← 前へ</button><button id="i-next" type="button">次へ →</button></div>
+</div>
+</main>
+<footer id="credits">
+<h2>お手本の音声の出典</h2>
+<p>お手本は Wikimedia Commons（Lingua Libre を含む）で公開されている録音です。授業用に前後の無音を切り、音量をそろえて MP3 にしました。CC BY-SA の録音を加工した音声は、同じライセンスで利用できます。話者名から Commons の元ファイルに移れます。</p>
+<details><summary>一覧を開く（29 件）</summary>
+<table><tbody>
+<tr><td>forward</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-forward.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>table</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-table.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>happy</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-happy.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>average</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-average.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>generous</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-generous.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>comfortable</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-comfortable.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>police</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-police.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>prefer</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-prefer.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>believe</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-believe.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>important</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-important.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>contribute</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-contribute.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>recommend</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-recommend.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>introduce</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-introduce.ogg">TreeMama</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>photograph</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-photograph.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>photography</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-photography.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>economy</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-economy.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>economic</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-economic.ogg">Persent101</a></td><td><a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">CC BY-SA 4.0</a></td></tr>
+<tr><td>nation</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-nation.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>nationality</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-nationality.ogg">Neskaya</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>political</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-political.ogg">Dvortygirl</a></td><td>Public domain</td></tr>
+<tr><td>politician</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-politician.ogg">Neskaya</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>record-noun</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-record-noun.ogg">Dvortygirl</a></td><td>Public domain</td></tr>
+<tr><td>record-verb</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-record-verb.ogg">Dvortygirl</a></td><td>Public domain</td></tr>
+<tr><td>permit-noun</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-permit-noun.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>permit-verb</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-permit-verb.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>object-noun</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-object-noun.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>object-verb</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-object-verb.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>increase-noun</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-increase-noun.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>increase-verb</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-increase-verb.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+</tbody></table></details>
+<p>ページ：英語音声学（目白大学）授業資料</p>
+</footer>
+<script src="../speak/core.js?v=086a43f9"></script>
+<script src="../speak/practice.js?v=9ed2d7e3"></script>
+<script>SP.practice({"page": "l05", "view": "pitch", "sections": [{"title": "第1音節に強勢", "lead": "太字が強く読む音節。「高さ・強さ」の図で、強い音節が高く・強く・長くなっているかをお手本と比べます。", "items": [{"id": "forward", "html": "<b class=\"st\">FOR</b>ward", "text": "FORward", "note": "", "ctx": "", "check": "FOR を高く長く、-ward は弱く短く", "model": "audio/us_forward.mp3", "maxSec": 6}, {"id": "table", "html": "<b class=\"st\">TA</b>ble", "text": "TAble", "note": "", "ctx": "", "check": "TA を強く、-ble は弱く", "model": "audio/us_table.mp3", "maxSec": 6}, {"id": "happy", "html": "<b class=\"st\">HAP</b>py", "text": "HAPpy", "note": "", "ctx": "", "check": "HAP を強く、-py は軽く", "model": "audio/us_happy.mp3", "maxSec": 6}, {"id": "average", "html": "<b class=\"st\">AV</b>erage", "text": "AVerage", "note": "", "ctx": "", "check": "AV を強く、後ろの2音節は弱く短く", "model": "audio/us_average.mp3", "maxSec": 6}, {"id": "generous", "html": "<b class=\"st\">GEN</b>erous", "text": "GENerous", "note": "", "ctx": "", "check": "GEN を強く、-erous は弱く", "model": "audio/us_generous.mp3", "maxSec": 6}, {"id": "comfortable", "html": "<b class=\"st\">COM</b>fortable", "text": "COMfortable", "note": "", "ctx": "", "check": "COM のあとは弱く短く（3音節 /ˈkʌmftərbl/ で言う人も多い）", "model": "audio/us_comfortable.mp3", "maxSec": 6}]}, {"title": "後ろの音節に強勢", "lead": "", "items": [{"id": "police", "html": "po<b class=\"st\">LICE</b>", "text": "poLICE", "note": "", "ctx": "", "check": "po は [pə] で弱く短く。LICE を高く長く", "model": "audio/us_police.mp3", "maxSec": 6}, {"id": "prefer", "html": "pre<b class=\"st\">FER</b>", "text": "preFER", "note": "", "ctx": "", "check": "pre は弱く、FER を強く", "model": "audio/us_prefer.mp3", "maxSec": 6}, {"id": "believe", "html": "be<b class=\"st\">LIEVE</b>", "text": "beLIEVE", "note": "", "ctx": "", "check": "be は [bɪ] で弱く", "model": "audio/us_believe.mp3", "maxSec": 6}, {"id": "important", "html": "im<b class=\"st\">POR</b>tant", "text": "imPORtant", "note": "", "ctx": "", "check": "POR を強く、im- と -tant は弱く", "model": "audio/us_important.mp3", "maxSec": 6}, {"id": "contribute", "html": "con<b class=\"st\">TRIB</b>ute", "text": "conTRIBute", "note": "", "ctx": "", "check": "TRIB を強く。第1音節を強くしない", "model": "audio/us_contribute.mp3", "maxSec": 6}, {"id": "recommend", "html": "recom<b class=\"st\">MEND</b>", "text": "recomMEND", "note": "", "ctx": "", "check": "rec- に第2強勢、MEND が主強勢", "model": "audio/us_recommend.mp3", "maxSec": 6}, {"id": "introduce", "html": "intro<b class=\"st\">DUCE</b>", "text": "introDUCE", "note": "", "ctx": "", "check": "in- に第2強勢、DUCE が主強勢", "model": "audio/us_introduce.mp3", "maxSec": 6}]}, {"title": "語族で強勢が移る", "lead": "接辞が付くと強勢の位置が移り、強くない母音は弱くなります（教科書 3.4・3.9）。", "items": [{"id": "photograph", "html": "<b class=\"st\">PHO</b>tograph", "text": "PHOtograph", "note": "", "ctx": "", "check": "PHO が強い。-to- は弱い [ə]", "model": "audio/us_photograph.mp3", "maxSec": 6}, {"id": "photography", "html": "pho<b class=\"st\">TOG</b>raphy", "text": "phoTOGraphy", "note": "", "ctx": "", "check": "TOG が強い。pho- は弱い [fə]", "model": "audio/us_photography.mp3", "maxSec": 6}, {"id": "economy", "html": "e<b class=\"st\">CON</b>omy", "text": "eCONomy", "note": "", "ctx": "", "check": "CON が強い", "model": "audio/us_economy.mp3", "maxSec": 6}, {"id": "economic", "html": "eco<b class=\"st\">NOM</b>ic", "text": "ecoNOMic", "note": "", "ctx": "", "check": "NOM が強い。ec- に第2強勢", "model": "audio/us_economic.mp3", "maxSec": 6}, {"id": "nation", "html": "<b class=\"st\">NA</b>tion", "text": "NAtion", "note": "", "ctx": "", "check": "NA が強い", "model": "audio/us_nation.mp3", "maxSec": 6}, {"id": "nationality", "html": "natio<b class=\"st\">NAL</b>ity", "text": "natioNALity", "note": "", "ctx": "", "check": "NAL が強い。na- に第2強勢", "model": "audio/us_nationality.mp3", "maxSec": 6}, {"id": "political", "html": "po<b class=\"st\">LIT</b>ical", "text": "poLITical", "note": "", "ctx": "", "check": "LIT が強い", "model": "audio/us_political.mp3", "maxSec": 6}, {"id": "politician", "html": "poli<b class=\"st\">TI</b>cian", "text": "poliTIcian", "note": "", "ctx": "", "check": "TI が強い。po- に第2強勢", "model": "audio/us_politician.mp3", "maxSec": 6}]}, {"title": "名詞と動詞", "lead": "同じ綴りで、名詞は前、動詞は後ろの音節が強くなります（教科書 3.7）。", "items": [{"id": "record-dd7c", "html": "<b class=\"st\">RE</b>cord", "text": "REcord", "note": "名詞：記録", "ctx": "", "check": "名詞（記録）。RE を強く、-cord は弱く", "model": "audio/us_record-noun.mp3", "maxSec": 6}, {"id": "record-351b", "html": "re<b class=\"st\">CORD</b>", "text": "reCORD", "note": "動詞：記録する", "ctx": "", "check": "動詞（記録する）。re- は [rɪ] で弱く", "model": "audio/us_record-verb.mp3", "maxSec": 6}, {"id": "permit-033c", "html": "<b class=\"st\">PER</b>mit", "text": "PERmit", "note": "名詞：許可証", "ctx": "", "check": "名詞（許可証）", "model": "audio/us_permit-noun.mp3", "maxSec": 6}, {"id": "permit-ecd8", "html": "per<b class=\"st\">MIT</b>", "text": "perMIT", "note": "動詞：許可する", "ctx": "", "check": "動詞（許可する）", "model": "audio/us_permit-verb.mp3", "maxSec": 6}, {"id": "object-0a6f", "html": "<b class=\"st\">OB</b>ject", "text": "OBject", "note": "名詞：物体", "ctx": "", "check": "名詞（物体）", "model": "audio/us_object-noun.mp3", "maxSec": 6}, {"id": "object-fadf", "html": "ob<b class=\"st\">JECT</b>", "text": "obJECT", "note": "動詞：反対する", "ctx": "", "check": "動詞（反対する）", "model": "audio/us_object-verb.mp3", "maxSec": 6}, {"id": "increase-1ae6", "html": "<b class=\"st\">IN</b>crease", "text": "INcrease", "note": "名詞：増加", "ctx": "", "check": "名詞（増加）", "model": "audio/us_increase-noun.mp3", "maxSec": 6}, {"id": "increase-b30a", "html": "in<b class=\"st\">CREASE</b>", "text": "inCREASE", "note": "動詞：増える", "ctx": "", "check": "動詞（増える）", "model": "audio/us_increase-verb.mp3", "maxSec": 6}]}, {"title": "句と文の中で", "lead": "お手本の録音はありません。語の強勢を、短い句や文の中でも保ちます（教科書 3.2・3.7）。", "items": [{"id": "a-record-record-it", "html": "a <b class=\"st\">RE</b>cord — re<b class=\"st\">CORD</b> it", "text": "a REcord — reCORD it", "note": "", "ctx": "", "check": "名詞と動詞で強勢を切り替える", "model": null, "maxSec": 8}, {"id": "a-present-present-it", "html": "a <b class=\"st\">PRE</b>sent — pre<b class=\"st\">SENT</b> it", "text": "a PREsent — preSENT it", "note": "", "ctx": "", "check": "名詞と動詞で強勢を切り替える", "model": null, "maxSec": 8}, {"id": "where-did-you-buy-the-goldfish", "html": "Where did you buy the <b class=\"st\">GOLD</b>fish?", "text": "Where did you buy the GOLDfish?", "note": "", "ctx": "", "check": "goldfish は複合語。GOLD を強く、fish は弱め", "model": null, "maxSec": 8}]}]});</script>
+</body></html>
