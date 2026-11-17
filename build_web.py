@@ -283,12 +283,18 @@ main{max-width:640px;margin:0 auto}h2{font-size:19px;margin:28px 0 4px}.sub{font
 <a href="lecture04/">第4回　子音連続と音節</a>
 <a href="lecture05/">第5回　語強勢</a>
 <a href="lecture06/">第6回　文の卓立とリズム</a>
-<h2>話して練習（録音して聞き比べ）</h2>
-<p class="sub">お手本を聞き、自分の声を録音して、声紋・声の高さの図で比べます。録音はスマホの中だけで使い、送信しません。</p>
+<h2>話して練習・発音の課題</h2>
+<p class="sub">お手本のあとに言って録音し、自分の声を聞き比べます。何回でも録り直せます。課題の項目は、納得した録音を決定して提出します。</p>
 <a href="lecture03/speak.html">第3回　子音</a>
 <a href="lecture04/speak.html">第4回　子音連続と音節</a>
 <a href="lecture05/speak.html">第5回　語強勢</a>
 <a href="lecture06/speak.html">第6回　文の卓立とリズム</a>
+<h2>話して練習（音声分析つき）</h2>
+<p class="sub">同じ練習に、波形・声紋（スペクトログラム）・声の高さ（F0）と強さの図が付きます。お手本と自分の声を同じ時間目盛りで比べられます。</p>
+<a href="lecture03/analyze.html">第3回　子音</a>
+<a href="lecture04/analyze.html">第4回　子音連続と音節</a>
+<a href="lecture05/analyze.html">第5回　語強勢</a>
+<a href="lecture06/analyze.html">第6回　文の卓立とリズム</a>
 </main></body></html>
 """
 

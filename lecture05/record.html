@@ -4,7 +4,7 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#2B3A67">
 <title>語強勢の発音テスト</title>
-<link rel="stylesheet" href="../speak/speak.css?v=a00a451f">
+<link rel="stylesheet" href="../speak/speak.css?v=8a97faea">
 </head>
 <body class="test">
 <header><p>英語音声学　第5回</p><h1>語強勢の発音テスト</h1></header>
@@ -14,12 +14,12 @@
 
 <section id="s-start">
  <div class="card">
-  <p>画面に出る英語を、1問ずつ録音して提出します。全 <b>12</b> 問。お手本は流れません。各問 <b>3</b> 回まで録音でき、最後の録音を提出します。全部録ったら一覧で聞き直してから送信します。</p>
+  <p>画面に出る英語を、1問ずつ録音します。全 <b>12</b> 問。お手本は流れません。<b>録音を止めると、その場で自動的に先生に送信</b>され、次の問題に進みます（聞き直し・録り直しはしません）。</p>
   <ul class="tips sub">
    <li>静かな部屋で、スマホを口から20 cmほど離して録音してください。</li>
-   <li>ふだんの速さで、はっきり読みます。</li>
-   <li>「マイクの使用」をたずねられたら「許可」を押してください。</li>
-   <li>送信が終わるまでページを閉じないでください。</li>
+   <li>ふだんの速さで、はっきり1回読みます。話し終わると録音は自動でも止まります。</li>
+   <li>声が録れていないときだけ、その問題をもう一度録音できます。</li>
+   <li>「マイクの使用」をたずねられたら「許可」を押してください。最後の「提出しました」が出るまでページを閉じないでください。</li>
   </ul>
  </div>
  <div class="card">
@@ -34,36 +34,29 @@
 
 <section id="s-rec" hidden>
  <div class="progress"><span id="r-count"></span><span id="who"></span></div>
- <div class="progress" style="justify-content:flex-end"><div class="dots" id="r-dots" aria-hidden="true"></div></div>
+ <div class="progress"><span class="sub" id="up-state"></span><div class="dots" id="r-dots" aria-hidden="true"></div></div>
  <div class="card prompt">
   <p class="sub" style="margin:0 0 6px">次の英語を読んでください</p>
   <p class="ctx" id="r-ctx" lang="en" hidden></p>
   <div class="text" id="r-text" lang="en"></div>
   <p class="note" id="r-note" hidden></p>
  </div>
- <div class="recorder" id="r-recorder">
+ <div class="recorder">
   <button class="rec-btn" id="btn-rec" type="button" aria-label="録音を始める"><span></span></button>
   <div class="rec-label" id="rec-label">タップして録音</div>
   <div class="timer" id="rec-timer"></div>
   <div class="meter" id="rec-meter"><i></i></div>
-  <div class="sub" id="rec-left"></div>
  </div>
- <div class="card take" id="r-take" hidden>
-  <canvas class="wave" id="take-wave"></canvas>
-  <audio id="take-audio" controls preload="auto"></audio>
-  <div><span class="chip" id="take-chip"></span></div>
-  <div class="row2"><button class="btn2" id="btn-retake" type="button">録り直す</button><button class="btn2 primary" id="btn-next" type="button">次へ</button></div>
- </div>
- <button class="linkish" id="btn-prev" type="button">← 前の問題にもどる</button>
+ <p class="msg" id="r-msg" aria-live="polite"></p>
 </section>
 
-<section id="s-review" hidden>
- <h2 style="margin-top:4px">録音を聞いて確かめてください</h2>
- <p class="sub">気になる問題は「録り直す」で、その問題だけ録音し直せます（各問 3 回まで）。</p>
- <div class="card" style="padding-block:4px"><ol class="review" id="review-list"></ol></div>
- <div id="send-progress" hidden><div class="bar"><i id="send-bar"></i></div><p class="sub" id="send-label"></p></div>
- <p class="err" id="send-error" hidden></p>
- <button class="main" id="btn-send" type="button">この内容で提出する</button>
+<section id="s-send" hidden>
+ <div class="card">
+  <h2 style="margin-top:0">送信しています</h2>
+  <div class="bar"><i id="send-bar"></i></div>
+  <p class="sub" id="send-label"></p>
+  <button class="main" id="resend" type="button" hidden>もう一度送信する</button>
+ </div>
 </section>
 
 <section id="s-done" hidden>
@@ -76,13 +69,13 @@
  <div class="card"><dl class="meta">
   <dt>氏名</dt><dd id="d-name"></dd><dt>受信</dt><dd id="d-count"></dd><dt>日時</dt><dd id="d-time"></dd><dt>回</dt><dd id="d-attempt"></dd>
  </dl></div>
- <p class="sub">念のため、この画面をスクリーンショットで保存してください。もう一度提出すると、新しい提出として受け付けます（採点は最後の提出）。</p>
+ <p class="sub">念のため、この画面をスクリーンショットで保存してください。もう一度受けると、新しい提出として受け付けます（採点は最後の提出）。</p>
  <div class="banner" id="d-demo" hidden>お試し表示のため、実際には送信していません。</div>
  <button class="main ghost" id="again" type="button">はじめにもどる</button>
 </section>
 </main>
 <script src="../config.js"></script>
-<script src="../speak/core.js?v=086a43f9"></script>
-<script src="../speak/record.js?v=d23d0e15"></script>
-<script>SP.record({"testId": "l05-speak", "title": "第5回 語強勢の発音テスト", "maxTakes": 3, "items": [{"text": "photograph", "note": "", "ctx": "", "check": "第1音節 PHO が主強勢。-to- は弱い [ə]", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "photography", "note": "", "ctx": "", "check": "第2音節 TOG が主強勢。pho- は弱い", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "photographic", "note": "", "ctx": "", "check": "第3音節 GRAPH が主強勢（第1音節に第2強勢）", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "economy", "note": "", "ctx": "", "check": "第2音節 CON が主強勢", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "economic", "note": "", "ctx": "", "check": "第3音節 NOM が主強勢（第1音節に第2強勢）", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "political", "note": "", "ctx": "", "check": "第2音節 LIT が主強勢", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "politician", "note": "", "ctx": "", "check": "第3音節 TI が主強勢", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "comfortable", "note": "", "ctx": "", "check": "第1音節 COM。後ろは弱く短い", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "important", "note": "", "ctx": "", "check": "第2音節 POR が主強勢", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "recommend", "note": "", "ctx": "", "check": "第3音節 MEND が主強勢（第1音節に第2強勢）", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "a record — record it", "note": "名詞（記録）→ 動詞（記録する）の順に読む", "ctx": "", "check": "名詞 REcord → 動詞 reCORD。動詞の re- は弱い", "area": "語強勢と弱音節を対照させる", "maxSec": 8}, {"text": "a present — present it", "note": "名詞（贈り物）→ 動詞（贈る）の順に読む", "ctx": "", "check": "名詞 PREsent → 動詞 preSENT", "area": "語強勢と弱音節を対照させる", "maxSec": 8}]});</script>
+<script src="../speak/core.js?v=220c540e"></script>
+<script src="../speak/record.js?v=4f6daec9"></script>
+<script>SP.record({"testId": "l05-speak", "title": "第5回 語強勢の発音テスト", "items": [{"text": "photograph", "note": "", "ctx": "", "check": "第1音節 PHO が主強勢。-to- は弱い [ə]", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "photography", "note": "", "ctx": "", "check": "第2音節 TOG が主強勢。pho- は弱い", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "photographic", "note": "", "ctx": "", "check": "第3音節 GRAPH が主強勢（第1音節に第2強勢）", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "economy", "note": "", "ctx": "", "check": "第2音節 CON が主強勢", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "economic", "note": "", "ctx": "", "check": "第3音節 NOM が主強勢（第1音節に第2強勢）", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "political", "note": "", "ctx": "", "check": "第2音節 LIT が主強勢", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "politician", "note": "", "ctx": "", "check": "第3音節 TI が主強勢", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "comfortable", "note": "", "ctx": "", "check": "第1音節 COM。後ろは弱く短い", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "important", "note": "", "ctx": "", "check": "第2音節 POR が主強勢", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "recommend", "note": "", "ctx": "", "check": "第3音節 MEND が主強勢（第1音節に第2強勢）", "area": "語強勢と弱音節を対照させる", "maxSec": 5}, {"text": "a record — record it", "note": "名詞（記録）→ 動詞（記録する）の順に読む", "ctx": "", "check": "名詞 REcord → 動詞 reCORD。動詞の re- は弱い", "area": "語強勢と弱音節を対照させる", "maxSec": 8}, {"text": "a present — present it", "note": "名詞（贈り物）→ 動詞（贈る）の順に読む", "ctx": "", "check": "名詞 PREsent → 動詞 preSENT", "area": "語強勢と弱音節を対照させる", "maxSec": 8}]});</script>
 </body></html>

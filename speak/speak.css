@@ -144,3 +144,26 @@ ol.review .warn{color:var(--ng);font-weight:700}
 dl.meta{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:15px}dl.meta dt{color:var(--sub)}dl.meta dd{margin:0}
 @media (max-width:360px){.ctrl button{font-size:13px}.prompt .text{font-size:24px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- お手本のあとに言う・課題の決定と提出（2026-11 追加） ---------- */
+.repeat{width:100%;min-height:62px;border:0;border-radius:14px;background:var(--hd);color:#fff;font-weight:800;font-size:17px;
+display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 8px;box-shadow:0 2px 0 rgba(0,0,0,.18);padding:6px 10px}
+.repeat i{font-style:normal;font-size:15px;letter-spacing:.05em;opacity:.9}
+.repeat.on{background:var(--rec)}
+ul.items i.tk{border:1.5px solid var(--hd);color:var(--hd)}
+ul.items i.dec{background:var(--ok);color:#fff}
+.card.task{border:2px solid var(--hd)}
+.card.task h2{font-size:18px}.card.task h2 .no{font-size:13px;background:var(--hd);color:#fff;border-radius:6px;padding:1px 8px;vertical-align:2px}
+.taskprog{font-size:16px;margin:4px 0 6px}.taskprog b{font-size:20px}
+.card.task .bar{margin:0 0 10px}
+.btn2.block{width:100%;margin:0 0 12px}
+.sent{background:color-mix(in srgb,var(--ok) 12%,var(--card));border-radius:10px;padding:8px 12px;font-size:14px}
+.ok{color:var(--ok)}.warn{color:var(--ng);font-weight:700}
+.card.decide{border:2px solid var(--hd);padding:12px}
+.decide .dlab{font-size:13px;font-weight:800;color:var(--hd);margin:0 0 4px}
+.decide #dec-state{font-size:15px;margin:0 0 10px}
+.decide .row2{margin:0 0 6px}
+.decide .linkish{padding:4px 0}
+.dot.sending{background:var(--btn);border-color:var(--btn)}
+.dot.fail{background:var(--ng);border-color:var(--ng)}
+.tabs button{font-size:13px}

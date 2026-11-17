@@ -34,12 +34,74 @@
     'iPhone：アドレスバーの「ぁあ」→「Webサイトの設定」→「マイク」を「許可」にして、ページを読み込み直してください。<br>' +
     'Android：アドレスバー左のアイコン→「権限」→「マイク」を許可して、ページを読み込み直してください。';
   SP.canRecord = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  SP.newId = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12));
+  SP.api = () => ((window.LISTENING_TEST_CONFIG || {}).apiUrl || '').trim();
+
+  // ---------- 送信（聞き取りテストと同じ Apps Script。web/gas/Code.gs の rec-upload / rec-finish） ----------
+  SP.toBase64 = (blob) => new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(String(fr.result).split(',')[1]);
+    fr.onerror = () => reject(fr.error);
+    fr.readAsDataURL(blob);
+  });
+  SP.post = async function (body) {
+    let last;
+    for (let n = 0; n < 3; n++) {
+      try {
+        const r = await fetch(SP.api(), { method: 'POST', body: JSON.stringify(body) });
+        const j = await r.json();
+        if (j.ok) return j;
+        throw Object.assign(new Error(j.error || 'error'), { server: true });
+      } catch (e) {
+        last = e;
+        if (e.server && e.message !== 'missing') break;   // 受付側が断ったものは繰り返さない
+        await new Promise((r) => setTimeout(r, 1500 * (n + 1)));
+      }
+    }
+    throw last;
+  };
+  SP.SERVER_ERRORS = {
+    closed: 'いまは受け付けていません。先生に伝えてください。',
+    too_large: '録音が大きすぎます。その項目を短く録り直してください。',
+    bad_request: '送信内容に不足があります。ページを開き直してください。',
+    missing: '一部の録音が届いていません。もう一度送信してください。',
+  };
+  // 受付の状態（true＝受付中、false＝停止中、undefined＝受付側がまだ録音に対応していない）
+  SP.recStatus = async function () {
+    if (!SP.api()) return 'demo';
+    try { const j = await (await fetch(SP.api())).json(); return j.recAccepting; } catch (e) { return null; }
+  };
+
+  // ---------- 端末内の保存（IndexedDB）。決定した録音を、提出するまで残す ----------
+  SP.db = (function () {
+    let p = null;
+    function open() {
+      if (!p) p = new Promise((res, rej) => {
+        const rq = indexedDB.open('english-phonetics-speak', 1);
+        rq.onupgradeneeded = () => rq.result.createObjectStore('kv');
+        rq.onsuccess = () => res(rq.result);
+        rq.onerror = () => rej(rq.error);
+      });
+      return p;
+    }
+    async function tx(mode, fn) {
+      const db = await open();
+      return new Promise((res, rej) => {
+        const t = db.transaction('kv', mode), st = t.objectStore('kv'), rq = fn(st);
+        t.oncomplete = () => res(rq && rq.result); t.onerror = () => rej(t.error);
+      });
+    }
+    return {
+      get: (k) => tx('readonly', (s) => s.get(k)).catch(() => undefined),
+      put: (k, v) => tx('readwrite', (s) => s.put(v, k)).catch(() => undefined),
+    };
+  })();
 
   // ---------- 録音 ----------
   // 1回の録音ごとにマイクを開き、止めたら閉じる（iPhone で、マイクを開いたままだと再生音が小さくなるため）。
   // エコー除去・ノイズ抑制・自動音量調整は切る（分析に使えるよう、加工しない音を取る）。
   class Recorder {
-    constructor() { this.ctx = null; this.stream = null; this.chunks = []; this.length = 0; this.level = 0; this.recording = false; this.live = false; this.onlive = null; }
+    constructor() { this.ctx = null; this.stream = null; this.chunks = []; this.length = 0; this.level = 0; this.recording = false; this.live = false; this.onlive = null; this.onchunk = null; }
     get rate() { return this.ctx ? this.ctx.sampleRate : 48000; }
     get seconds() { return this.length / this.rate; }
     // タップの処理の中で（await より前に）呼ぶ。iPhone は利用者の操作の中でないと音声処理を始められない
@@ -67,6 +129,7 @@
         this.level = pk;
         this.chunks.push(new Float32Array(d)); this.length += d.length;
         if (!this.live) { this.live = true; if (this.onlive) this.onlive(); }
+        if (this.onchunk) this.onchunk(pk, d.length / this.ctx.sampleRate);
       };
       this.src.connect(this.proc); this.proc.connect(this.mute); this.mute.connect(this.ctx.destination);
     }
@@ -83,6 +146,18 @@
     }
   }
   SP.Recorder = Recorder;
+
+  // 話し終わりの検出：最初の 0.15 秒で雑音の大きさを測り、声が出たあと gap 秒静かになったら done() を呼ぶ
+  SP.endDetector = function (done, gap) {
+    let t = 0, noise = 0, n = 0, voiced = 0, quiet = 0, heard = false;
+    return function (pk, dt) {
+      t += dt;
+      if (t < 0.15) { noise = Math.max(noise, pk); n++; return; }
+      const thr = Math.max(0.02, noise * 4);
+      if (pk > thr) { voiced += dt; quiet = 0; if (voiced > 0.08) heard = true; }
+      else if (heard) { quiet += dt; if (quiet >= (gap || 0.9)) done(); }
+    };
+  };
 
   SP.peak = function (x) { let p = 0; for (let i = 0; i < x.length; i++) { const v = Math.abs(x[i]); if (v > p) p = v; } return p; };
 
@@ -261,7 +336,7 @@
         spec[f * bins + b] = p; if (p > specMax) specMax = p;
       }
     }
-    return { fs, hop, nf, dur: n / fs, db, dbMax, f0, med, spec, specMax, bins };
+    return { fs, hop, nf, dur: n / fs, db, dbMax, f0, med, spec, specMax, bins, x };
   };
 
   // 録音（Float32, rate）から、無音を切った区間・その WAV・分析をまとめて作る
@@ -352,7 +427,29 @@
       on = true;
     }
     g.stroke();
-    label(g, '高さ', 6, 4); label(g, '強さ', 6, h - 16);
+    label(g, '高さ（F0）', 6, 4); label(g, '強さ', 6, h - 16);
+    label(g, '点線＝' + Math.round(an.med) + ' Hz　上下 ±10 半音', w - 4, 4, 'right');
+  };
+
+  // 波形（オシログラム）：横は total 秒を全幅、縦はその録音の最大振幅にそろえる
+  SP.drawOsc = function (canvas, an, total) {
+    const { g, w, h } = setup(canvas);
+    g.fillStyle = css('--plot-bg') || '#fff'; g.fillRect(0, 0, w, h);
+    const x = an.x, n = x.length, ww = w * Math.min(1, an.dur / total), mid = h / 2;
+    let pk = 0; for (let i = 0; i < n; i++) { const v = Math.abs(x[i]); if (v > pk) pk = v; }
+    const k = pk > 0 ? 0.92 / pk : 1;
+    g.strokeStyle = css('--plot-grid') || 'rgba(0,0,0,.15)'; g.beginPath(); g.moveTo(0, mid + 0.5); g.lineTo(w, mid + 0.5); g.stroke();
+    g.fillStyle = css('--plot-ink') || '#000';
+    for (let px = 0; px < ww; px++) {
+      const a = Math.floor(px / ww * n), b = Math.max(a + 1, Math.floor((px + 1) / ww * n));
+      let mn = 0, mx = 0;
+      for (let i = a; i < b && i < n; i++) { const v = x[i]; if (v < mn) mn = v; if (v > mx) mx = v; }
+      g.fillRect(px, mid - mx * k * mid, 1, Math.max(1, (mx - mn) * k * mid));
+    }
+    // 0.1 秒ごとの目盛り
+    g.fillStyle = css('--plot-sub') || '#666';
+    for (let t = 0.1; t < total; t += 0.1) g.fillRect(Math.round(t / total * w), h - (Math.round(t * 10) % 5 ? 4 : 8), 1, 8);
+    label(g, '波形（音圧の変化）', 6, 4);
   };
 
   // 波形（テストの録音確認用）

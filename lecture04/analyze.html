@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1F6F64">
+<title>子音連続と音節を話して練習（音声分析つき）</title>
+<link rel="stylesheet" href="../speak/speak.css?v=8a97faea">
+</head>
+<body>
+<header><p>英語音声学　第4回</p><h1>子音連続と音節を話して練習（音声分析つき）</h1></header>
+<main>
+<div class="banner" id="inapp" hidden></div>
+<div id="list-view">
+ <div class="card">
+  <p>項目をタップすると練習画面が開きます。<b>「お手本のあとに言う」</b>を押すと、お手本が流れ、終わると自動で録音が始まります。言い終わると録音が止まり、自分の声が流れます。<b>何回でも</b>録り直せます。<b>比べる</b>でお手本と自分の声を続けて聞きましょう。波形・声紋・声の高さ（F0）と強さの図で、お手本と自分の声を同じ時間目盛りで見比べられます。</p>
+  <p class="sub">録音はこのスマホの中だけで使います。送信するのは、課題で「決定」して「提出する」を押した録音だけです。静かな場所で、スマホを口から20 cmほど離して録音してください。</p>
+  <p class="summary" id="summary"></p>
+ </div>
+ <div class="card task" id="task" hidden>
+  <h2 style="margin-top:0"><span class="no">課題</span>第4回 子音連続と音節の発音課題</h2>
+  <p>「課題」の印がある <b>10</b> 項目を、納得いくまで練習してください。各項目で<b>「この録音に決定」</b>を押し、全部決めたらここで<b>提出</b>します。決定した録音はこのスマホに残るので、何日かに分けてもかまいません。</p>
+  <div class="banner" id="t-demo" hidden>送信先が未設定のため、いまはお試し表示です（録音は送られません）。</div>
+  <p class="taskprog" id="t-prog"></p>
+  <div class="bar"><i id="t-bar"></i></div>
+  <button class="btn2 block" id="t-next" type="button">次の未決定の課題へ →</button>
+  <p class="sent" id="t-sent" hidden></p>
+  <label for="sid">学籍番号</label>
+  <input id="sid" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="例：24A0001">
+  <label for="nm">氏名</label>
+  <input id="nm" autocomplete="name" placeholder="例：目白 花子">
+  <p class="err" id="t-err"></p>
+  <button class="main" id="t-send" type="button">提出する</button>
+  <div id="t-progress" hidden><div class="bar"><i id="t-sbar"></i></div><p class="sub" id="t-label"></p></div>
+ </div>
+ <div id="list"></div>
+ <p class="sub"><a href="speak.html" style="color:inherit;font-weight:700">図を出さない練習ページへ →</a>　｜　<a href="index.html" style="color:inherit">聞いて練習（第4回）へ</a></p>
+</div>
+<div id="item-view" hidden>
+ <div class="topbar"><button class="linkish" id="i-back" type="button">← 一覧</button><span class="count" id="i-count"></span></div>
+ <p class="secname" id="i-sec"></p>
+ <div class="card prompt"><p class="ctx" id="i-ctx" hidden></p><div class="text" id="i-text" lang="en"></div><p class="note" id="i-note" hidden></p></div>
+ <div class="check" id="i-check" hidden></div>
+ <button class="repeat" id="b-repeat" type="button"><i>▶ ●</i><span>お手本のあとに言う（自動で録音）</span></button>
+ <div class="ctrl">
+  <button id="b-model" type="button"><i>▶</i><span>お手本</span></button>
+  <button id="b-rec" class="rec" type="button"><i>●</i><span>録音</span></button>
+  <button id="b-self" type="button" disabled><i>▶</i><span>自分</span></button>
+  <button id="b-both" type="button" disabled><i>⇄</i><span>比べる</span></button>
+ </div>
+ <div class="meter" id="meter"><i></i></div>
+ <p class="msg" id="rec-msg" aria-live="polite"></p>
+ <div class="card decide" id="decide" hidden>
+  <p class="dlab">課題：提出する録音</p>
+  <p id="dec-state"></p>
+  <div class="row2"><button class="btn2 primary" id="b-decide" type="button">この録音に決定</button><button class="btn2" id="b-dplay" type="button" hidden>▶ 決定した録音</button></div>
+  <p class="sub" id="dec-rest"></p>
+  <button class="linkish" id="b-dnext" type="button">次の未決定の課題へ →</button>
+ </div>
+ <div class="tabs" id="tabs"><button type="button" data-view="wave">波形</button><button type="button" data-view="spec">声紋</button><button type="button" data-view="pitch">高さ（F0）・強さ</button></div>
+ <div class="plot" id="row-model"><div class="lab"><span>お手本</span><span id="d-model"></span></div><div class="cv"><canvas id="c-model"></canvas><div class="ph" id="ph-model" hidden></div></div></div>
+ <div class="plot"><div class="lab"><span>あなた</span><span id="d-self"></span></div><div class="cv"><canvas id="c-self"></canvas><div class="ph" id="ph-self" hidden></div></div></div>
+ <p class="legend" id="legend"></p>
+ <div class="card rate"><p>自己評価</p><div id="rate">
+  <button type="button" data-v="0"><b>0</b><span>まだ難しい</span></button>
+  <button type="button" data-v="1"><b>1</b><span>意識すればできる</span></button>
+  <button type="button" data-v="2"><b>2</b><span>安定してできる</span></button></div></div>
+ <div class="navrow"><button id="i-prev" type="button">← 前へ</button><button id="i-next" type="button">次へ →</button></div>
+</div>
+</main>
+<footer id="credits">
+<h2>お手本の音声の出典</h2>
+<p>お手本は Wikimedia Commons（Lingua Libre を含む）で公開されている録音です。授業用に前後の無音を切り、音量をそろえて MP3 にしました。CC BY-SA の録音を加工した音声は、同じライセンスで利用できます。話者名から Commons の元ファイルに移れます。</p>
+<details><summary>一覧を開く（20 件）</summary>
+<table><tbody>
+<tr><td>eat</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-eat.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>treat</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-treat.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>street</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-street.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>try</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-try.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>play</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-play.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>quick</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-quick.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>square</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-square.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>splendid</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-splendid.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>flight</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-flight.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>help</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-help.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>helped</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-helped.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>ask</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-ask.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>asked</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-asked.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>gift</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-gift.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>gifts</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-gifts.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>texts</td><td><a href="https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-texts.wav">Wodencafe</a></td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">CC0</a></td></tr>
+<tr><td>button</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-button.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>cotton</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-cotton.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>little</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-little.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+<tr><td>metal</td><td><a href="https://commons.wikimedia.org/wiki/File:En-us-metal.ogg">Dvortygirl</a></td><td><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja">CC BY-SA 3.0</a></td></tr>
+</tbody></table></details>
+<p>ページ：英語音声学（目白大学）授業資料</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../speak/core.js?v=220c540e"></script>
+<script src="../speak/practice.js?v=409b336c"></script>
+<script>SP.practice({"page": "l04", "view": "spec", "sections": [{"title": "後ろから組み立てる", "lead": "母音に近い部分から言い、子音を1つずつ前に足します（教科書 3.4）。どれも1音節のまま。声紋で、子音の間に母音の横じまが入っていないかを見ます。", "items": [{"id": "eat", "html": "eat", "text": "eat", "note": "/iːt/", "ctx": "", "check": "まず母音と [t] だけ", "model": "audio/us_eat.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "treat", "html": "<b class=\"st\">tr</b>eat", "text": "treat", "note": "/triːt/", "ctx": "", "check": "[t] から舌を離さずに [r] へ。1音節", "model": "audio/us_treat.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "street", "html": "<b class=\"st\">str</b>eet", "text": "street", "note": "/striːt/", "ctx": "", "check": "[s][t][r] の間に母音を入れない（「ストゥリート」にしない）。1音節", "model": "audio/us_street.mp3", "task": true, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}]}, {"title": "語頭の子音連続", "lead": "", "items": [{"id": "try", "html": "<b class=\"st\">tr</b>y", "text": "try", "note": "/traɪ/", "ctx": "", "check": "[t] と [r] の間に母音を入れない。1音節", "model": "audio/us_try.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "play", "html": "<b class=\"st\">pl</b>ay", "text": "play", "note": "/pleɪ/", "ctx": "", "check": "[p] の唇の閉じと [l] の舌先を同時に準備。「プ」に母音を入れない", "model": "audio/us_play.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "quick", "html": "<b class=\"st\">qu</b>ick", "text": "quick", "note": "/kwɪk/", "ctx": "", "check": "[k] と唇の丸め [w] をほぼ同時に", "model": "audio/us_quick.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "square", "html": "<b class=\"st\">squ</b>are", "text": "square", "note": "/skwer/", "ctx": "", "check": "[s][k][w] の3つの子音の間に母音を入れない", "model": "audio/us_square.mp3", "task": true, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "splendid", "html": "<b class=\"st\">spl</b>endid", "text": "splendid", "note": "/ˈsplendɪd/", "ctx": "", "check": "spl を一息に。2音節", "model": "audio/us_splendid.mp3", "task": true, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "flight", "html": "<b class=\"st\">fl</b>ight", "text": "flight", "note": "/flaɪt/", "ctx": "", "check": "下唇と歯の [f] から [l] へ。1音節", "model": "audio/us_flight.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}]}, {"title": "語末の子音連続と文法", "lead": "過去・複数の印になる子音を落とさず、母音も足しません（教科書 3.8・3.11）。", "items": [{"id": "help", "html": "help", "text": "help", "note": "/help/", "ctx": "", "check": "語末の [lp]", "model": "audio/us_help.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "helped", "html": "hel<b class=\"st\">ped</b>", "text": "helped", "note": "/helpt/", "ctx": "", "check": "-ed は [t]。「ヘルプド」にしない。1音節", "model": "audio/us_helped.mp3", "task": true, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "ask", "html": "ask", "text": "ask", "note": "/æsk/", "ctx": "", "check": "語末の [sk]", "model": "audio/us_ask.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "asked", "html": "as<b class=\"st\">ked</b>", "text": "asked", "note": "/æskt/", "ctx": "", "check": "語末の [skt]。過去の [t] を落とさない", "model": "audio/us_asked.mp3", "task": true, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "gift", "html": "gift", "text": "gift", "note": "/ɡɪft/", "ctx": "", "check": "語末の [ft]", "model": "audio/us_gift.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "gifts", "html": "gif<b class=\"st\">ts</b>", "text": "gifts", "note": "/ɡɪfts/", "ctx": "", "check": "複数の [s] まで。母音を足さない", "model": "audio/us_gifts.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "texts", "html": "te<b class=\"st\">xts</b>", "text": "texts", "note": "/teksts/", "ctx": "", "check": "語末の [ksts]。1音節。難しければ text から", "model": "audio/ll_texts.mp3", "task": true, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}]}, {"title": "音節主音的子音", "lead": "母音を入れず、鼻音や [l] が音節の中心になる形を試します（教科書 3.3）。", "items": [{"id": "button", "html": "butt<b class=\"st\">on</b>", "text": "button", "note": "/ˈbʌtn̩/", "ctx": "", "check": "[t] のあと母音を入れず、そのまま鼻から [n] を出す形も試す。2音節", "model": "audio/us_button.mp3", "task": true, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "cotton", "html": "cott<b class=\"st\">on</b>", "text": "cotton", "note": "/ˈkɑːtn̩/", "ctx": "", "check": "[tn̩]：舌先を歯ぐきにつけたまま鼻へ", "model": "audio/us_cotton.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "little", "html": "litt<b class=\"st\">le</b>", "text": "little", "note": "/ˈlɪtl̩/", "ctx": "", "check": "[t]（アメリカ英語では弾音 [ɾ]）のあと、舌先をつけたまま [l̩]", "model": "audio/us_little.mp3", "task": true, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}, {"id": "metal", "html": "met<b class=\"st\">al</b>", "text": "metal", "note": "/ˈmetl̩/", "ctx": "", "check": "[tl̩]。「メタル」の「ル」の母音を入れない", "model": "audio/us_metal.mp3", "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 6}]}, {"title": "文の中で", "lead": "お手本の録音はありません。目標の語、2語のまとまり、文全体の順に練習して録音します（教科書 3.1・3.2・3.5）。", "items": [{"id": "try-and-do-it", "html": "<b class=\"st\">Tr</b>y and do it.", "text": "Try and do it.", "note": "", "ctx": "", "check": "try を1音節で", "model": null, "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 8}, {"id": "she-pressed-the-bell", "html": "She <b class=\"st\">pr</b>e<b class=\"st\">ssed</b> the bell.", "text": "She pressed the bell.", "note": "", "ctx": "", "check": "pressed を1音節で、[st] を保つ", "model": null, "task": true, "area": "母音挿入を必要に応じて抑える", "maxSec": 8}, {"id": "he-crashed-his-car", "html": "He <b class=\"st\">cr</b>a<b class=\"st\">shed</b> his car.", "text": "He crashed his car.", "note": "", "ctx": "", "check": "crashed を1音節で（[kræʃt]）", "model": null, "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 8}, {"id": "let-s-have-a-quick-drink", "html": "Let&#x27;s have a <b class=\"st\">qu</b>ick <b class=\"st\">dr</b>ink.", "text": "Let's have a quick drink.", "note": "", "ctx": "", "check": "quick の [kw]・drink の [dr] に母音を入れない", "model": null, "task": true, "area": "母音挿入を必要に応じて抑える", "maxSec": 8}, {"id": "she-gave-birth-to-twins", "html": "She gave bir<b class=\"st\">th</b> to <b class=\"st\">tw</b>ins.", "text": "She gave birth to twins.", "note": "", "ctx": "", "check": "birth to の [θt]、twins の [tw]", "model": null, "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 8}, {"id": "three-fifths-of-them-were-bought-for-gifts", "html": "<b class=\"st\">Thr</b>ee-<b class=\"st\">fifths</b> of them were bought for <b class=\"st\">gifts</b>.", "text": "Three-fifths of them were bought for gifts.", "note": "", "ctx": "", "check": "three・fifths・gifts の子音連続に母音を入れない", "model": null, "task": false, "area": "母音挿入を必要に応じて抑える", "maxSec": 10}]}], "task": {"testId": "l04-task", "title": "第4回 子音連続と音節の発音課題"}, "analysis": true});</script>
+</body></html>

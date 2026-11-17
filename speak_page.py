@@ -3,14 +3,16 @@
 項目は教科書（~/Projects/books/english-phonetics/dist/英語音声学_改訂用.md）各章の「3. 発音練習」と付録E から取った。
   練習：お手本は各回の聞いて練習ページと同じ公開ライセンス録音（web/lectureNN/audio にあるものだけ）。録音の無い文はお手本なしで、
         強く読む部分の印（*…*）と「ここを意識」だけを出す。合成音声は使わない。
-  テスト：お手本は流さず、綴りだけを出す（第5回の強勢・第6回の焦点を印で教えない）。見る点（check）は採点用に受付側へ送る。
+  練習の「お手本のあとに言う」：お手本が終わると自動で録音が始まり、言い終わると止まって自分の声が流れる。何回でも録り直せる。
+  課題（練習ページの中）：TASK の項目は、納得した録音で「この録音に決定」→ 全部決めたら「提出する」。testId は lNN-task。
+  テスト：お手本は流さず、綴りだけを出す（第5回の強勢・第6回の焦点を印で教えない）。録音するとその場で自動送信して次の問題へ（testId は lNN-speak）。
+  見る点（check）は採点用に受付側へ送る。
 評価は教科書 付録G.6 の 0（まだ難しい）・1（意識すればできる）・2（課題内で安定）。練習の自己評価と先生の採点で同じ尺度を使う。
 部品：web/speak/core.js（録音・分析・描画）、practice.js、record.js、speak.css。受付は web/gas/Code.gs（rec-upload / rec-finish）。
 """
 import hashlib, html, json, os, re
 
 WEB = os.path.dirname(os.path.abspath(__file__))
-MAX_TAKES = 3   # テストで1問に録音できる回数（最後の録音を提出）
 
 LIC_URL = {"CC BY-SA 3.0": "https://creativecommons.org/licenses/by-sa/3.0/deed.ja",
            "CC BY-SA 4.0": "https://creativecommons.org/licenses/by-sa/4.0/deed.ja",
@@ -263,6 +265,16 @@ L6 = {
     ],
 }
 
+# 課題（練習ページから提出する項目）。表示の * を除いた綴りで指定する。採点の負担を考えて各回 10〜12 項目
+L3["task"] = ["think", "sink", "three", "free", "breathe", "very", "berry", "she", "light", "right", "Turn on the right light."]
+L4["task"] = ["street", "square", "splendid", "helped", "asked", "texts", "button", "little", "She pressed the bell.", "Let's have a quick drink."]
+L5["task"] = ["COMfortable", "imPORtant", "recomMEND", "PHOtograph", "phoTOGraphy", "eCONomy", "ecoNOMic", "poLITical", "poliTIcian",
+              "REcord", "reCORD", "a PREsent — preSENT it"]
+L6["task"] = ["PIECE of CAKE", "NOW and THEN", "of COURSE", "good MORNing", "COME to TEA with JOHN and MARy at TEN.",
+              "THANK you VERy MUCH for EVerything.", "I WANTed him to KNOW.",
+              "I sent the report yesterday.|Q: Who sent the report yesterday?", "I SENT the report yesterday.|Q: Did you lose the report yesterday?",
+              "I sent the rePORT yesterday.|Q: Did you send the letter yesterday?", "I sent the report YESterday.|Q: Did you send the report today?"]
+
 LECTURES = {3: L3, 4: L4, 5: L5, 6: L6}
 
 
@@ -289,6 +301,13 @@ HEAD = """<!doctype html>
 <link rel="stylesheet" href="../speak/speak.css?v={vcss}">
 </head>"""
 
+PLOTS_ON = """ <div class="tabs" id="tabs"><button type="button" data-view="wave">波形</button><button type="button" data-view="spec">声紋</button><button type="button" data-view="pitch">高さ（F0）・強さ</button></div>
+ <div class="plot" id="row-model"><div class="lab"><span>お手本</span><span id="d-model"></span></div><div class="cv"><canvas id="c-model"></canvas><div class="ph" id="ph-model" hidden></div></div></div>
+ <div class="plot"><div class="lab"><span>あなた</span><span id="d-self"></span></div><div class="cv"><canvas id="c-self"></canvas><div class="ph" id="ph-self" hidden></div></div></div>
+ <p class="legend" id="legend"></p>"""
+PLOTS_OFF = """ <p class="sub" id="d-self2"></p>
+ <div hidden><div id="ph-model"></div><div id="ph-self"></div></div>"""
+
 PRACTICE = HEAD + """
 <body>
 <header><p>英語音声学　{lecture}</p><h1>{title}</h1></header>
@@ -296,18 +315,35 @@ PRACTICE = HEAD + """
 <div class="banner" id="inapp" hidden></div>
 <div id="list-view">
  <div class="card">
-  <p>項目をタップすると練習画面が開きます。<b>お手本</b>を聞く → <b>録音</b> → <b>自分</b>の声を聞く → <b>比べる</b>（お手本のすぐあとに自分の声）。お手本と自分の声を、同じ時間の目盛りの図で見比べられます。</p>
-  <p class="sub">録音はこのスマホの中だけで使い、どこにも送信しません（ページを閉じると消えます）。自己評価（0・1・2）だけがこの端末に残ります。静かな場所で、スマホを口から20 cmほど離して録音してください。</p>
+  <p>項目をタップすると練習画面が開きます。<b>「お手本のあとに言う」</b>を押すと、お手本が流れ、終わると自動で録音が始まります。言い終わると録音が止まり、自分の声が流れます。<b>何回でも</b>録り直せます。<b>比べる</b>でお手本と自分の声を続けて聞きましょう。{intro2}</p>
+  <p class="sub">録音はこのスマホの中だけで使います。送信するのは、課題で「決定」して「提出する」を押した録音だけです。静かな場所で、スマホを口から20 cmほど離して録音してください。</p>
   <p class="summary" id="summary"></p>
  </div>
+ <div class="card task" id="task" hidden>
+  <h2 style="margin-top:0"><span class="no">課題</span>{tasktitle}</h2>
+  <p>「課題」の印がある <b>{ntask}</b> 項目を、納得いくまで練習してください。各項目で<b>「この録音に決定」</b>を押し、全部決めたらここで<b>提出</b>します。決定した録音はこのスマホに残るので、何日かに分けてもかまいません。</p>
+  <div class="banner" id="t-demo" hidden>送信先が未設定のため、いまはお試し表示です（録音は送られません）。</div>
+  <p class="taskprog" id="t-prog"></p>
+  <div class="bar"><i id="t-bar"></i></div>
+  <button class="btn2 block" id="t-next" type="button">次の未決定の課題へ →</button>
+  <p class="sent" id="t-sent" hidden></p>
+  <label for="sid">学籍番号</label>
+  <input id="sid" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="例：24A0001">
+  <label for="nm">氏名</label>
+  <input id="nm" autocomplete="name" placeholder="例：目白 花子">
+  <p class="err" id="t-err"></p>
+  <button class="main" id="t-send" type="button">提出する</button>
+  <div id="t-progress" hidden><div class="bar"><i id="t-sbar"></i></div><p class="sub" id="t-label"></p></div>
+ </div>
  <div id="list"></div>
- <p class="sub"><a href="index.html" style="color:inherit">聞いて練習（{lecture}）へ</a></p>
+ <p class="sub"><a href="{otherhref}" style="color:inherit;font-weight:700">{othername}</a>　｜　<a href="index.html" style="color:inherit">聞いて練習（{lecture}）へ</a></p>
 </div>
 <div id="item-view" hidden>
  <div class="topbar"><button class="linkish" id="i-back" type="button">← 一覧</button><span class="count" id="i-count"></span></div>
  <p class="secname" id="i-sec"></p>
  <div class="card prompt"><p class="ctx" id="i-ctx" hidden></p><div class="text" id="i-text" lang="en"></div><p class="note" id="i-note" hidden></p></div>
  <div class="check" id="i-check" hidden></div>
+ <button class="repeat" id="b-repeat" type="button"><i>▶ ●</i><span>お手本のあとに言う（自動で録音）</span></button>
  <div class="ctrl">
   <button id="b-model" type="button"><i>▶</i><span>お手本</span></button>
   <button id="b-rec" class="rec" type="button"><i>●</i><span>録音</span></button>
@@ -316,10 +352,14 @@ PRACTICE = HEAD + """
  </div>
  <div class="meter" id="meter"><i></i></div>
  <p class="msg" id="rec-msg" aria-live="polite"></p>
- <div class="tabs" id="tabs"><button type="button" data-view="spec">声紋</button><button type="button" data-view="pitch">高さ・強さ</button></div>
- <div class="plot" id="row-model"><div class="lab"><span>お手本</span><span id="d-model"></span></div><div class="cv"><canvas id="c-model"></canvas><div class="ph" id="ph-model" hidden></div></div></div>
- <div class="plot"><div class="lab"><span>あなた</span><span id="d-self"></span></div><div class="cv"><canvas id="c-self"></canvas><div class="ph" id="ph-self" hidden></div></div></div>
- <p class="legend" id="legend"></p>
+ <div class="card decide" id="decide" hidden>
+  <p class="dlab">課題：提出する録音</p>
+  <p id="dec-state"></p>
+  <div class="row2"><button class="btn2 primary" id="b-decide" type="button">この録音に決定</button><button class="btn2" id="b-dplay" type="button" hidden>▶ 決定した録音</button></div>
+  <p class="sub" id="dec-rest"></p>
+  <button class="linkish" id="b-dnext" type="button">次の未決定の課題へ →</button>
+ </div>
+{plots}
  <div class="card rate"><p>自己評価</p><div id="rate">
   <button type="button" data-v="0"><b>0</b><span>まだ難しい</span></button>
   <button type="button" data-v="1"><b>1</b><span>意識すればできる</span></button>
@@ -336,6 +376,7 @@ PRACTICE = HEAD + """
 </tbody></table></details>
 <p>ページ：英語音声学（目白大学）授業資料</p>
 </footer>
+<script src="../config.js"></script>
 <script src="../speak/core.js?v={vcore}"></script>
 <script src="../speak/practice.js?v={vjs}"></script>
 <script>SP.practice({data});</script>
@@ -351,12 +392,12 @@ RECORD = HEAD + """
 
 <section id="s-start">
  <div class="card">
-  <p>画面に出る英語を、1問ずつ録音して提出します。全 <b>{total}</b> 問。お手本は流れません。各問 <b>{maxtakes}</b> 回まで録音でき、最後の録音を提出します。全部録ったら一覧で聞き直してから送信します。</p>
+  <p>画面に出る英語を、1問ずつ録音します。全 <b>{total}</b> 問。お手本は流れません。<b>録音を止めると、その場で自動的に先生に送信</b>され、次の問題に進みます（聞き直し・録り直しはしません）。</p>
   <ul class="tips sub">
    <li>静かな部屋で、スマホを口から20 cmほど離して録音してください。</li>
-   <li>ふだんの速さで、はっきり読みます。</li>
-   <li>「マイクの使用」をたずねられたら「許可」を押してください。</li>
-   <li>送信が終わるまでページを閉じないでください。</li>
+   <li>ふだんの速さで、はっきり1回読みます。話し終わると録音は自動でも止まります。</li>
+   <li>声が録れていないときだけ、その問題をもう一度録音できます。</li>
+   <li>「マイクの使用」をたずねられたら「許可」を押してください。最後の「提出しました」が出るまでページを閉じないでください。</li>
   </ul>
  </div>
  <div class="card">
@@ -371,36 +412,29 @@ RECORD = HEAD + """
 
 <section id="s-rec" hidden>
  <div class="progress"><span id="r-count"></span><span id="who"></span></div>
- <div class="progress" style="justify-content:flex-end"><div class="dots" id="r-dots" aria-hidden="true"></div></div>
+ <div class="progress"><span class="sub" id="up-state"></span><div class="dots" id="r-dots" aria-hidden="true"></div></div>
  <div class="card prompt">
   <p class="sub" style="margin:0 0 6px">次の英語を読んでください</p>
   <p class="ctx" id="r-ctx" lang="en" hidden></p>
   <div class="text" id="r-text" lang="en"></div>
   <p class="note" id="r-note" hidden></p>
  </div>
- <div class="recorder" id="r-recorder">
+ <div class="recorder">
   <button class="rec-btn" id="btn-rec" type="button" aria-label="録音を始める"><span></span></button>
   <div class="rec-label" id="rec-label">タップして録音</div>
   <div class="timer" id="rec-timer"></div>
   <div class="meter" id="rec-meter"><i></i></div>
-  <div class="sub" id="rec-left"></div>
  </div>
- <div class="card take" id="r-take" hidden>
-  <canvas class="wave" id="take-wave"></canvas>
-  <audio id="take-audio" controls preload="auto"></audio>
-  <div><span class="chip" id="take-chip"></span></div>
-  <div class="row2"><button class="btn2" id="btn-retake" type="button">録り直す</button><button class="btn2 primary" id="btn-next" type="button">次へ</button></div>
- </div>
- <button class="linkish" id="btn-prev" type="button">← 前の問題にもどる</button>
+ <p class="msg" id="r-msg" aria-live="polite"></p>
 </section>
 
-<section id="s-review" hidden>
- <h2 style="margin-top:4px">録音を聞いて確かめてください</h2>
- <p class="sub">気になる問題は「録り直す」で、その問題だけ録音し直せます（各問 {maxtakes} 回まで）。</p>
- <div class="card" style="padding-block:4px"><ol class="review" id="review-list"></ol></div>
- <div id="send-progress" hidden><div class="bar"><i id="send-bar"></i></div><p class="sub" id="send-label"></p></div>
- <p class="err" id="send-error" hidden></p>
- <button class="main" id="btn-send" type="button">この内容で提出する</button>
+<section id="s-send" hidden>
+ <div class="card">
+  <h2 style="margin-top:0">送信しています</h2>
+  <div class="bar"><i id="send-bar"></i></div>
+  <p class="sub" id="send-label"></p>
+  <button class="main" id="resend" type="button" hidden>もう一度送信する</button>
+ </div>
 </section>
 
 <section id="s-done" hidden>
@@ -413,7 +447,7 @@ RECORD = HEAD + """
  <div class="card"><dl class="meta">
   <dt>氏名</dt><dd id="d-name"></dd><dt>受信</dt><dd id="d-count"></dd><dt>日時</dt><dd id="d-time"></dd><dt>回</dt><dd id="d-attempt"></dd>
  </dl></div>
- <p class="sub">念のため、この画面をスクリーンショットで保存してください。もう一度提出すると、新しい提出として受け付けます（採点は最後の提出）。</p>
+ <p class="sub">念のため、この画面をスクリーンショットで保存してください。もう一度受けると、新しい提出として受け付けます（採点は最後の提出）。</p>
  <div class="banner" id="d-demo" hidden>お試し表示のため、実際には送信していません。</div>
  <button class="main ghost" id="again" type="button">はじめにもどる</button>
 </section>
@@ -449,6 +483,9 @@ def build(no, source):
     L = LECTURES[no]
     d = os.path.join(WEB, f"lecture{no:02d}")
     sections, used, ids = [], [], set()
+    # 課題の指定は表示の綴り（大文字・小文字を含む）で照合。焦点の文は「文|質問」
+    task_keys = {t.replace("*", "") for t in L["task"]}
+    found = set()
     for si, (title, lead, its) in enumerate(L["sections"]):
         out = []
         for it in its:
@@ -462,17 +499,30 @@ def build(no, source):
             iid = re.sub(r"[^a-z0-9]+", "-", (it["ctx"] + " " + plain).lower()).strip("-") + ("-" + hashlib.md5(it["note"].encode()).hexdigest()[:4] if it["note"].endswith(("名詞", "動詞")) or "：" in it["note"] else "")
             assert iid not in ids, iid
             ids.add(iid)
+            tkey = it["text"].replace("*", "") if not it["ctx"] else it["text"].replace("*", "") + "|" + it["ctx"]
+            is_task = tkey in task_keys
+            if is_task:
+                found.add(tkey)
             out.append({"id": iid, "html": mark(it["text"]), "text": plain, "note": it["note"], "ctx": it["ctx"],
-                        "check": it["check"], "model": f"audio/{k}.mp3" if k else None,
+                        "check": it["check"], "model": f"audio/{k}.mp3" if k else None, "task": is_task,
+                        "area": AREA["focus" if it["ctx"].startswith("Q:") else no],
                         "maxSec": it["maxSec"] or (6 if " " not in plain.strip() else 8)})
         sections.append({"title": title, "lead": lead, "items": out})
-    title = f'{L["topic"]}を話して練習'
-    data = {"page": f"l{no:02d}", "view": L["view"], "sections": sections}
-    page = fill(PRACTICE, color="#1F6F64", title=title, lecture=L["lecture"], vcss=ver("speak.css"), vcore=ver("core.js"),
-                vjs=ver("practice.js"), n=len(used), credits=credit_rows(used, source))
-    page = page.replace("{data}", json.dumps(data, ensure_ascii=False))
-    assert "fk_" not in page
-    open(os.path.join(d, "speak.html"), "w").write(page)
+    assert found == task_keys, (no, task_keys - found)
+    tasktitle = f'{L["lecture"]} {L["topic"]}の発音課題'
+    data = {"page": f"l{no:02d}", "view": L["view"], "sections": sections,
+            "task": {"testId": f"l{no:02d}-task", "title": tasktitle}}
+    # 図を出さない版（speak.html）と、波形・声紋・F0 を出す音声分析つきの版（analyze.html）。課題の決定・自己評価は両方で共有
+    for fname, analysis in (("speak.html", False), ("analyze.html", True)):
+        title = f'{L["topic"]}を話して練習' + ("（音声分析つき）" if analysis else "")
+        other = ("speak.html", "図を出さない練習ページへ →") if analysis else ("analyze.html", "音声分析（波形・声紋・F0）つきで練習する →")
+        page = fill(PRACTICE, color="#1F6F64", title=title, lecture=L["lecture"], vcss=ver("speak.css"), vcore=ver("core.js"),
+                    vjs=ver("practice.js"), n=len(used), credits=credit_rows(used, source), tasktitle=tasktitle, ntask=len(task_keys),
+                    plots=PLOTS_ON if analysis else PLOTS_OFF, otherhref=other[0], othername=other[1],
+                    intro2="波形・声紋・声の高さ（F0）と強さの図で、お手本と自分の声を同じ時間目盛りで見比べられます。" if analysis else "")
+        page = page.replace("{data}", json.dumps(dict(data, analysis=analysis), ensure_ascii=False))
+        assert "fk_" not in page
+        open(os.path.join(d, fname), "w").write(page)
 
     tests = []
     for i, it in enumerate(L["test"]):
@@ -481,9 +531,9 @@ def build(no, source):
         tests.append({"text": it["text"], "note": it["note"], "ctx": it["ctx"], "check": it["check"],
                       "area": AREA[it["area"] or no], "maxSec": sec})
     ttitle = f'{L["topic"]}の発音テスト'
-    data = {"testId": f"l{no:02d}-speak", "title": f'{L["lecture"]} {ttitle}', "maxTakes": MAX_TAKES, "items": tests}
+    data = {"testId": f"l{no:02d}-speak", "title": f'{L["lecture"]} {ttitle}', "items": tests}
     page = fill(RECORD, color="#2B3A67", title=ttitle, lecture=L["lecture"], vcss=ver("speak.css"), vcore=ver("core.js"),
-                vjs=ver("record.js"), total=len(tests), maxtakes=MAX_TAKES)
+                vjs=ver("record.js"), total=len(tests))
     page = page.replace("{data}", json.dumps(data, ensure_ascii=False))
     open(os.path.join(d, "record.html"), "w").write(page)
-    print(f"lecture{no:02d}: speak {sum(len(s['items']) for s in sections)} items ({len(used)} models), record {len(tests)} items")
+    print(f"lecture{no:02d}: speak {sum(len(s['items']) for s in sections)} items ({len(used)} models, task {len(task_keys)}), record {len(tests)} items")
